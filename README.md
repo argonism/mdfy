@@ -1,20 +1,22 @@
-# MDFY
+![mdfy logo](teaser.png)
 
-![Python Version](https://img.shields.io/badge/Python-3.8+-blue.svg)
+# mdfy
+
+<!-- ![Python Version](https://img.shields.io/badge/Python-3.8+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Last Commit](https://img.shields.io/github/last-commit/argonism/MDFY)
-![Issues](https://img.shields.io/github/issues/your_username/MDFY)
+![Last Commit](https://img.shields.io/github/last-commit/argonism/mdfy)
+![Issues](https://img.shields.io/github/issues/your_username/mdfy) -->
 
 Transform text into beautiful markdown, effortlessly.
 
-<p align="center">
+<!-- <p align="center">
   <img src="path_to_your_project_logo_or_image" alt="MDFY Logo" width="400">
-</p>
+</p> -->
 
 ## 🌟 Features
 
-- **Simplicity**: Just a few lines of code, and voila! シンプルなアーキテクチャで直感的．
-- **Modulability**: モジュールの独立性が高く，単体で使いやすい．
+- **Simplicity**: Just a few lines of code and voila! An intuitive architecture made simple.
+- **Modulability**: Each module is highly independent, making it easy to use on its own.
 - **Customizable**: Extensible design allowing for easy customization.
 - **Highly Tested**: Robust unit tests ensure reliability.
 
@@ -22,7 +24,7 @@ Transform text into beautiful markdown, effortlessly.
 
 ### Installation
 
-```bash
+```shell
 pip install mdfy
 ```
 
@@ -43,8 +45,28 @@ Mdfy("markdown.md").write(contents)
 #
 # # Hello, MDFY!
 # **Life** is *like* a bicycle.
-#
 ```
+
+Each mdfy element is string-convertible and can operate independently!
+
+```python
+from mdfy import MdText, MdHeader, MdTable
+
+print(MdHeader("Hello, MDFY!"))
+print(MdText("[Life:bold] is [like:italic] a bicycle."))
+print(MdTable({"head1": "content", "head2": "content"}, transpose=True))
+
+# => result
+#
+# # Hello, MDFY!
+# **Life** is *like* a bicycle.
+# | Key | Value |
+# | --- | --- |
+# | head1 | content |
+# | head2 | content |
+```
+
+### MdText の記法
 
 ## 📖 Documentation
 
@@ -54,7 +76,7 @@ Check out our [full documentation](link_to_your_documentation) for detailed guid
 
 To run the tests:
 
-```bash
+```shell
 python -m pytest
 ```
 
