@@ -53,6 +53,7 @@ jobs:
           SLACK_TITLE: ✨ Publish / Success
           SLACK_COLOR: good
           SLACK_MESSAGE: Publish for v${{ needs.pypi-publish.outputs.version }} is ready!
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
       - name: Slack Notification on Failure
         uses: rtCamp/action-slack-notify@v2
         if: ${{ failure() }}
@@ -60,7 +61,7 @@ jobs:
           SLACK_TITLE: ☔ Publish / Failure
           SLACK_COLOR: danger
           SLACK_MESSAGE: Publishing for v${{ needs.pypi-publish.outputs.version }} failed!
-
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
   github-release:
     needs: pypi-publish
@@ -108,6 +109,7 @@ jobs:
           SLACK_MESSAGE: |
             Release for v${{ needs.pypi-publish.outputs.version }} is now created!
             https://github.com/argonism/piyo/releases/tag/v${{ needs.pypi-publish.outputs.version }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
       - name: Slack Notification on Failure
         uses: rtCamp/action-slack-notify@v2
         if: ${{ failure() }}
@@ -115,3 +117,4 @@ jobs:
           SLACK_TITLE: ☔ Release / Failure
           SLACK_COLOR: danger
           SLACK_MESSAGE: Creating release for v${{ needs.pypi-publish.outputs.version }} failed!
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
