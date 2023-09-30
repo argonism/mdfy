@@ -12,64 +12,82 @@ on:
         required: false
 
 jobs:
-  setup:
+  pypi-publish:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ github.event.inputs.version }}
+    environment:
+      name: release
+    permissions:
+      id-token: write
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
           python-version: 3.9
+
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 - --version 1.6.0
+
       - name: Add path for Poetry
         run: echo "$HOME/.poetry/bin" >> $GITHUB_PATH
+
       - name: Add Poetry Plugin
         run: |
           poetry self add poetry-version-plugin
 
-  build-and-publish:
-    runs-on: ubuntu-latest
-    needs: setup
-    permissions:
-      id-token: write
-    steps:
-      - uses: actions/checkout@v2
       - name: Build Poetry
         run: |
-          git tag v${{ needs.setup.outputs.version }}
+          git tag v${{ github.event.inputs.version }}
           poetry build
+
       - name: Publish release distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
 
-  release:
+      - name: Slack Notification on Success
+        uses: rtCamp/action-slack-notify@v2
+        if: ${{ success() }}
+        env:
+          SLACK_TITLE: ✨ Publish / Success
+          SLACK_COLOR: good
+          SLACK_MESSAGE: Publish for v${{ needs.pypi-publish.outputs.version }} is ready!
+      - name: Slack Notification on Failure
+        uses: rtCamp/action-slack-notify@v2
+        if: ${{ failure() }}
+        env:
+          SLACK_TITLE: ☔ Publish / Failure
+          SLACK_COLOR: danger
+          SLACK_MESSAGE: Publishing for v${{ needs.pypi-publish.outputs.version }} failed!
+
+
+  github-release:
+    needs: pypi-publish
     runs-on: ubuntu-latest
-    needs: build-and-publish
-    environment:
-      name: release
     steps:
       - uses: actions/checkout@v2
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ needs.setup.outputs.version }}
-          release_name: Release v${{ needs.setup.outputs.version }}
+          tag_name: v${{ needs.pypi-publish.outputs.version }}
+          release_name: Release v${{ needs.pypi-publish.outputs.version }}
           body: |
             ${{ github.event.inputs.release_note }}
           draft: false
           prerelease: false
+
       - name: Get Name of Artifact
         run: |
           ARTIFACT_PATHNAME=$(ls dist/*.whl | head -n 1)
           ARTIFACT_NAME=$(basename $ARTIFACT_PATHNAME)
           echo "ARTIFACT_PATHNAME=${ARTIFACT_PATHNAME}" >> $GITHUB_ENV
           echo "ARTIFACT_NAME=${ARTIFACT_NAME}" >> $GITHUB_ENV
+
       - name: Upload Whl to Release Assets
         id: upload-release-asset
         uses: actions/upload-release-asset@v1.0.2
@@ -80,3 +98,20 @@ jobs:
           asset_path: ${{ env.ARTIFACT_PATHNAME }}
           asset_name: ${{ env.ARTIFACT_NAME }}
           asset_content_type: application/x-wheel+zip
+
+      - name: Slack Notification on Success
+        uses: rtCamp/action-slack-notify@v2
+        if: ${{ success() }}
+        env:
+          SLACK_TITLE: 📮 Release / Success
+          SLACK_COLOR: good
+          SLACK_MESSAGE: |
+            Release for v${{ needs.pypi-publish.outputs.version }} is now created!
+            https://github.com/argonism/piyo/releases/tag/v${{ needs.pypi-publish.outputs.version }}
+      - name: Slack Notification on Failure
+        uses: rtCamp/action-slack-notify@v2
+        if: ${{ failure() }}
+        env:
+          SLACK_TITLE: ☔ Release / Failure
+          SLACK_COLOR: danger
+          SLACK_MESSAGE: Creating release for v${{ needs.pypi-publish.outputs.version }} failed!
