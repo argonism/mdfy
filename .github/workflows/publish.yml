@@ -10,11 +10,12 @@ on:
       release_note:
         description: "release note"
         required: false
+
 jobs:
-  release:
+  setup:
     runs-on: ubuntu-latest
-    environment:
-      name: release
+    outputs:
+      version: ${{ github.event.inputs.version }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -29,20 +30,36 @@ jobs:
       - name: Add Poetry Plugin
         run: |
           poetry self add poetry-version-plugin
+
+  build-and-publish:
+    runs-on: ubuntu-latest
+    needs: setup
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v2
       - name: Build Poetry
         run: |
-          git tag v${{ github.event.inputs.version }}
+          git tag v${{ needs.setup.outputs.version }}
           poetry build
       - name: Publish release distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build-and-publish
+    environment:
+      name: release
+    steps:
+      - uses: actions/checkout@v2
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ github.event.inputs.version }}
-          release_name: Release v${{ github.event.inputs.version }}
+          tag_name: v${{ needs.setup.outputs.version }}
+          release_name: Release v${{ needs.setup.outputs.version }}
           body: |
             ${{ github.event.inputs.release_note }}
           draft: false
