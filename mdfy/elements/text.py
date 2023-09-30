@@ -16,18 +16,36 @@ class MdTextFormatter(string.Formatter):
         "italic": "*{}*",
         "not": "~~{}~~",
         "underline": "<u>{}</u>",
-        "text": "`{}`",
+        "quote": "`{}`",
     }
+
+    STYLE_ALIASES = {
+        "strong": ["st"],
+        "bold": ["bo", "bd"],
+        "italic": ["it"],
+        "not": ["no", "nt"],
+        "underline": ["un", "ul"],
+        "quote": ["qu", "qt"],
+    }
+
+    def __init__(self, patterns: Optional[dict] = None):
+        super().__init__()
+        if patterns is None:
+            expand_patterns = {
+                alias: self.STYLE_PATTERNS[style_name]
+                for style_name, aliases in self.STYLE_ALIASES.items()
+                for alias in aliases
+            }
+            patterns = {**self.STYLE_PATTERNS, **expand_patterns}
+        self.patterns = patterns
 
     def format(self, format_string, /, *args, **kwargs):
         kwargs = self.EchoDict(**kwargs)
         return self.vformat(format_string, args, kwargs)
 
-    # STYLE_PATTERNSに基づいて、文字列を変換する
     def format_field(self, value, format_spec):
-        print(value, format_spec)
-        if format_spec in self.STYLE_PATTERNS:
-            return self.STYLE_PATTERNS[format_spec].format(value)
+        if format_spec in self.patterns:
+            return self.patterns[format_spec].format(value)
         else:
             return super().format_field(value, format_spec)
 
