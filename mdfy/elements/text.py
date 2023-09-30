@@ -1,18 +1,41 @@
 import re
+import string
+from typing import Optional
 
 from ._base import MdElement
 
 
-class MdText(MdElement):
+class MdTextFormatter(string.Formatter):
+    class EchoDict(dict):
+        def __missing__(self, key):
+            return key
+
     STYLE_PATTERNS = {
-        'strong': '***{}***',
-        'bold': '**{}**',
-        'italic': '*{}*',
-        'not': '~~{}~~',
-        'underline': '<u>{}</u>',
+        "strong": "***{}***",
+        "bold": "**{}**",
+        "italic": "*{}*",
+        "not": "~~{}~~",
+        "underline": "<u>{}</u>",
+        "text": "`{}`",
     }
 
-    def __init__(self, content: str):
+    def format(self, format_string, /, *args, **kwargs):
+        kwargs = self.EchoDict(**kwargs)
+        return self.vformat(format_string, args, kwargs)
+
+    # STYLE_PATTERNSに基づいて、文字列を変換する
+    def format_field(self, value, format_spec):
+        print(value, format_spec)
+        if format_spec in self.STYLE_PATTERNS:
+            return self.STYLE_PATTERNS[format_spec].format(value)
+        else:
+            return super().format_field(value, format_spec)
+
+
+class MdText(MdElement):
+    def __init__(
+        self, content: str, formatter: Optional[MdTextFormatter] = MdTextFormatter()
+    ):
         """
         Initialize a MdText instance.
 
@@ -20,6 +43,7 @@ class MdText(MdElement):
             content (str): The content string containing potential style markers.
         """
         self.content = content
+        self.formatter = formatter
 
     def __str__(self) -> str:
         """
@@ -29,14 +53,11 @@ class MdText(MdElement):
             str: Formatted markdown string with the appropriate styles applied.
         """
         result = self.content
-
-        for style, pattern in self.STYLE_PATTERNS.items():
-            # re.subを使ってマッチした部分を変換します
-            result = re.sub(r"\[(.*?):" + style + r"\]", lambda m: pattern.format(m.group(1)), result)
+        result = self.formatter.format(result)
 
         return result
 
-    def __add__(self, other: 'MdText') -> 'MdText':
+    def __add__(self, other: "MdText") -> "MdText":
         """
         Adds two MdText objects together.
 
