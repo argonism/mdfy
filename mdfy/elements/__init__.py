@@ -1,6 +1,7 @@
 from ._base import MdElement
 from .code import MdCode
 from .header import MdHeader
+from .horizontal import MdHorizontal
 from .image import MdImage
 from .link import MdLink
 from .list import MdList

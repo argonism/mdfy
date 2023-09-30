@@ -2,6 +2,7 @@ from .elements import (
     MdCode,
     MdElement,
     MdHeader,
+    MdHorizontal,
     MdImage,
     MdLink,
     MdList,

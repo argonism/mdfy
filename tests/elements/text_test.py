@@ -1,6 +1,6 @@
 import pytest
 
-from mdfy.elements.text import MdText
+from mdfy import MdText
 
 
 def test_plain_text():

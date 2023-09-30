@@ -1,4 +1,4 @@
-from mdfy.elements import MdQuote, MdText
+from mdfy import MdQuote, MdText
 
 
 def test_mdquote_with_simple_string():

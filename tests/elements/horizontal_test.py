@@ -1,6 +1,6 @@
 import pytest
 
-from mdfy.elements.horizontal import MdHorizontal
+from mdfy import MdHorizontal
 
 
 def test_md_horizontal_default():

@@ -1,6 +1,6 @@
 import pytest
 
-from mdfy.elements.header import MdHeader
+from mdfy import MdHeader
 
 
 @pytest.mark.parametrize(

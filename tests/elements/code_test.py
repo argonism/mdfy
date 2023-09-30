@@ -1,4 +1,4 @@
-from mdfy.elements import MdCode
+from mdfy import MdCode
 
 
 def test_mdcode_inline():
