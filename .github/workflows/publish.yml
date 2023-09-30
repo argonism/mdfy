@@ -1,4 +1,4 @@
-name: publish
+name: 🍳 Publish to pypi and create release
 
 on:
   workflow_dispatch:
@@ -85,7 +85,7 @@ jobs:
           SLACK_COLOR: good
           SLACK_MESSAGE: |
             Release for v${{ github.event.inputs.version }} is now created!
-            https://github.com/argonism/piyo/releases/tag/v${{ github.event.inputs.version }}
+            https://github.com/argonism/mdfy/releases/tag/v${{ github.event.inputs.version }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
       - name: Slack Notification on Failure
         uses: rtCamp/action-slack-notify@v2
