@@ -80,7 +80,7 @@ def test_flatten_dict():
 def test_mdtext_integration():
     from mdfy import MdText
 
-    data = {"text": MdText("[bold:bold]").__str__()}
+    data = {"text": MdText("{bold:bold}")}
     table = MdTable(data)
     md_output = table.dict_to_md_table()
     # fmt: off
