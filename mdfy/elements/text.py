@@ -33,9 +33,7 @@ class MdTextFormatter(string.Formatter):
 
 
 class MdText(MdElement):
-    def __init__(
-        self, content: str, formatter: Optional[MdTextFormatter] = MdTextFormatter()
-    ):
+    def __init__(self, content: str, formatter: MdTextFormatter = MdTextFormatter()):
         """
         Initialize a MdText instance.
 
