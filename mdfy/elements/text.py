@@ -2,13 +2,68 @@ import re
 import string
 from typing import Optional
 
+from lark import Lark, Tree
+from lark.visitors import Interpreter
+
 from ._base import MdElement
 
 
+class MdTextInterpreter(Interpreter):
+    """Lark Interpreter tailored for MdText interpreting styled text.
+
+    Args:
+        style_patterns (Dict[str, str]): A dictionary mapping style names to formatting strings.
+    """
+
+    def __init__(self, style_patterns: dict):
+        super().__init__()
+        self.style_patterns = style_patterns
+
+    def styled_text(self, tree: Tree) -> str:
+        """Processes a subtree for styled text.
+
+        Args:
+            tree (Tree): The subtree to process.
+
+        Returns:
+            str: The styled text.
+        """
+        _, text, _, style, _ = tree.children
+        target_text = text.children[0]
+        if len(text.children) > 1:
+            target_text += self.styled_text(text.children[1])
+
+        if style.value in self.style_patterns:
+            return self.style_patterns[style.value].format(target_text)
+        else:
+            return target_text
+
+    def start(self, tree: Tree):
+        return "".join(self.visit_children(tree))
+
+
+grammar = r"""
+    start: TEXT? styled_text? (start)* TEXT?
+    styled_text: LBRACE content COLON INTEXT RBRACE
+    content: INTEXT | INTEXT? styled_text
+    TEXT:   WS* /[^{}]+/ WS*
+    INTEXT: WS* /[^{}:]+/ WS*
+    LBRACE: "{"
+    RBRACE: "}"
+    COLON: ":"
+
+    %import common.WS
+"""
+
+
 class MdTextFormatter(string.Formatter):
-    class EchoDict(dict):
-        def __missing__(self, key):
-            return key
+    """Markdown Text Formatter to handle text styling based on a specified grammar and style patterns.
+
+    Attributes:
+        grammar (str): The grammar to be used for parsing the text.
+        interpreter (Interpreter): The interpreter to be used for interpreting the parsed text.
+        patterns (Dict[str, str]): Expanded style patterns including aliases.
+    """
 
     STYLE_PATTERNS = {
         "strong": "***{}***",
@@ -28,42 +83,83 @@ class MdTextFormatter(string.Formatter):
         "quote": ["qu", "qt"],
     }
 
-    def __init__(self, patterns: Optional[dict] = None):
-        super().__init__()
+    def __init__(
+        self,
+        grammar: str = grammar,
+        interpreter: Optional[Interpreter] = None,
+        patterns: Optional[dict] = None,
+    ):
+        self.grammar = grammar
+        if self.grammar is None:
+            raise ValueError("Grammar cannot be None")
+        self.parser = Lark(self.grammar)
+
         if patterns is None:
-            expand_patterns = {
-                alias: self.STYLE_PATTERNS[style_name]
-                for style_name, aliases in self.STYLE_ALIASES.items()
-                for alias in aliases
-            }
-            patterns = {**self.STYLE_PATTERNS, **expand_patterns}
+            patterns = self.expand_style_patterns(
+                self.STYLE_PATTERNS, self.STYLE_ALIASES
+            )
         self.patterns = patterns
 
-    def format(self, format_string, /, *args, **kwargs):
-        kwargs = self.EchoDict(**kwargs)
-        return self.vformat(format_string, args, kwargs)
+        if interpreter is None:
+            interpreter = MdTextInterpreter(self.patterns)
+        self.interpreter = interpreter
 
-    def format_field(self, value, format_spec):
-        if format_spec in self.patterns:
-            return self.patterns[format_spec].format(value)
-        else:
-            return super().format_field(value, format_spec)
+    def expand_style_patterns(self, base_patterns: dict, aliases: dict) -> dict:
+        """Expands the style patterns with aliases.
+
+        Args:
+            base_patterns (Dict[str, str]): Base style patterns.
+            aliases (Dict[str, str]): Aliases for the style names.
+
+        Returns:
+            Dict[str, str]: Expanded style patterns.
+        """
+        expand_patterns = {
+            alias: base_patterns[style_name]
+            for style_name, aliases in aliases.items()
+            for alias in aliases
+        }
+        return {**base_patterns, **expand_patterns}
+
+    def format(self, text: str) -> str:
+        """Formats the text for style markers and returns the formatted text.
+
+        Args:
+            text (str): The text to be formatted.
+
+        Returns:
+            str: The formatted text.
+        """
+        parsed = self.parse(text)
+        result = self.interpreter.visit(parsed)
+        return result
+
+    def parse(self, text: str) -> Tree:
+        """Parses the text for style markers and returns the parsed text.
+
+        Args:
+            text (str): The text to be parsed.
+
+        Returns:
+            lark.Tree: The parsed syntax tree.
+        """
+        return self.parser.parse(text)
 
 
 class MdText(MdElement):
-    def __init__(self, content: str, formatter: MdTextFormatter = MdTextFormatter()):
-        """
-        Initialize a MdText instance.
+    """MdElementt class to handle the text and styling of text.
 
-        Args:
-            content (str): The content string containing potential style markers.
-        """
+    Attributes:
+        content (str): The content string containing potential style markers.
+        formatter (string.Formatter): The formatter to apply styling to the content.
+    """
+
+    def __init__(self, content: str, formatter: string.Formatter = MdTextFormatter()):
         self.content = content
         self.formatter = formatter
 
     def __str__(self) -> str:
-        """
-        Returns the styled content as per the specified style markers.
+        """Returns the styled content as per the specified style markers.
 
         Returns:
             str: Formatted markdown string with the appropriate styles applied.
@@ -74,8 +170,7 @@ class MdText(MdElement):
         return result
 
     def __add__(self, other: "MdText") -> "MdText":
-        """
-        Adds two MdText objects together.
+        """Adds two MdText objects together.
 
         Args:
             other (MdText): The other MdText object to be added.

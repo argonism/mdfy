@@ -3,41 +3,6 @@ import pytest
 from mdfy import MdText
 
 
-def test_plain_text():
-    text = MdText("Hello World")
-    assert str(text) == "Hello World"
-
-
-def test_bold_text():
-    text = MdText("Hello {World:bold}")
-    assert str(text) == "Hello **World**"
-
-
-def test_italic_text():
-    text = MdText("Hello {World:italic}")
-    assert str(text) == "Hello *World*"
-
-
-def test_not_text():
-    text = MdText("Hello {World:not}")
-    assert str(text) == "Hello ~~World~~"
-
-
-def test_underline_text():
-    text = MdText("Hello {World:underline}")
-    assert str(text) == "Hello <u>World</u>"
-
-
-def test_combined_styles():
-    text = MdText("{Hello:bold} {World:italic}")
-    assert str(text) == "**Hello** *World*"
-
-
-def test_multiple_same_styles():
-    text = MdText("{Hello:bold} and {Hi:bold}")
-    assert str(text) == "**Hello** and **Hi**"
-
-
 def test_text_concatenation():
     text1 = MdText("{Hello:bold}")
     text2 = MdText("{World:italic}")
@@ -45,13 +10,30 @@ def test_text_concatenation():
     assert str(combined) == "**Hello***World*"
 
 
+def test_nested_style():
+    text = MdText("{italic in bold is = {strong:italic}:bold}")
+    assert str(text) == "**italic in bold is = *strong***"
+
+
 @pytest.mark.parametrize(
     "input_text, expected_output",
     [
         ("Plain text", "Plain text"),
+        ("{Hello:italic} and World", "*Hello* and World"),
+        ("{Hello:not} and World", "~~Hello~~ and World"),
+        ("{Hello:bold} and {World:bold}", "**Hello** and **World**"),
         ("{Hello:bold} and {World:italic}", "**Hello** and *World*"),
         ("{Hello:strong} and {World:strong}", "***Hello*** and ***World***"),
+        ("this is {quoted:quote} text", "this is `quoted` text"),
         ("{Hello:underline} and {World:underline}", "<u>Hello</u> and <u>World</u>"),
+        (
+            "This is {underline:underline} text in middle",
+            "This is <u>underline</u> text in middle",
+        ),
+        (
+            "This text has : in {not styled:bold} part",
+            "This text has : in **not styled** part",
+        ),
     ],
 )
 def test_various_texts(input_text, expected_output):
