@@ -47,7 +47,7 @@ def test_transposed_table():
     md_output = table.dict_to_md_table(transpose=True)
     # fmt: off
     expected_output = (
-        "| Key | Value |\n"
+        "| Key | Value 0 |\n"
         "| --- | --- |\n"
         "| name | John |\n"
         "| age | 30 |"
