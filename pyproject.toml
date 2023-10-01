@@ -4,6 +4,8 @@ version = "0.1.0"
 description = "Transform text into beautiful markdown, effortlessly."
 authors = ["k-ush <argoooooon@gmail.com>"]
 readme = "README.md"
+homepage = "https://github.com/argonism/mdfy"
+repository = "https://github.com/argonism/mdfy"
 
 [tool.poetry.dependencies]
 python = ">=3.7,<4.0"
