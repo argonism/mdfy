@@ -8,6 +8,9 @@ def test_initialization_with_dict():
     data = {"name": "John", "age": 30}
     table = MdTable(data)
     assert isinstance(table, MdTable)
+    md_output = table.dict_to_md_table()
+    expected_output = "| name | age |\n" "| --- | --- |\n" "| John | 30 |"
+    assert md_output == expected_output
 
 
 # Test initialization with list of dictionaries
@@ -15,6 +18,11 @@ def test_initialization_with_list():
     data = [{"name": "John", "age": 30}, {"name": "Doe", "age": 25}]
     table = MdTable(data)
     assert isinstance(table, MdTable)
+    md_output = table.dict_to_md_table()
+    expected_output = (
+        "| name | age |\n" "| --- | --- |\n" "| John | 30 |\n" "| Doe | 25 |"
+    )
+    assert md_output == expected_output
 
 
 # Test the creation of a regular markdown table from dictionary data
