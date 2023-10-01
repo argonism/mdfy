@@ -38,6 +38,18 @@ def test_nested_style():
             "{ユニコード文字列:underline}に対応してるか",
             "<u>ユニコード文字列</u>に対応してるか",
         ),
+        (
+            "{{Boldalic!!!:italic}:bold}",
+            "***Boldalic!!!***",
+        ),
+        (
+            "{italic in bold is = {strong:italic}:bold}",
+            "**italic in bold is = *strong***",
+        ),
+        (
+            "{This is {italic:italic} and {bold:bold} in underline:underline}",
+            "<u>This is *italic* and **bold** in underline</u>",
+        ),
     ],
 )
 def test_various_texts(input_text, expected_output):

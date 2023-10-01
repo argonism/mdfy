@@ -2,7 +2,7 @@ import re
 import string
 from typing import Optional
 
-from lark import Lark, Tree
+from lark import Lark, Token, Tree
 from lark.visitors import Interpreter
 
 from ._base import MdElement
@@ -19,6 +19,25 @@ class MdTextInterpreter(Interpreter):
         super().__init__()
         self.style_patterns = style_patterns
 
+    def process_content_tree(self, tree):
+        """Processes a subtree for content in yled text.
+
+        Args:
+            tree (Tree): The subtree to process.
+
+        Returns:
+            str: The processed text.
+        """
+        interpreted = ""
+        for child in tree.children:
+            if isinstance(child, Token):
+                interpreted += child.value
+            elif isinstance(child, Tree):
+                interpreted += self.styled_text(child)
+            else:
+                raise ValueError(f"Unable to handle this child type: {child.__class__}")
+        return interpreted
+
     def styled_text(self, tree: Tree) -> str:
         """Processes a subtree for styled text.
 
@@ -28,10 +47,11 @@ class MdTextInterpreter(Interpreter):
         Returns:
             str: The styled text.
         """
-        _, text, _, style, _ = tree.children
-        target_text = text.children[0]
-        if len(text.children) > 1:
-            target_text += self.styled_text(text.children[1])
+        _, *content, _, style, _ = tree.children
+
+        target_text = ""
+        for tree in content:
+            target_text += self.process_content_tree(tree)
 
         if style.value in self.style_patterns:
             return self.style_patterns[style.value].format(target_text)
@@ -44,7 +64,7 @@ class MdTextInterpreter(Interpreter):
 
 grammar = r"""
     start: TEXT? styled_text? (start)* TEXT?
-    styled_text: LBRACE content COLON INTEXT RBRACE
+    styled_text: LBRACE content+ COLON INTEXT RBRACE
     content: INTEXT | INTEXT? styled_text
     TEXT:   WS* /[^{}]+/ WS*
     INTEXT: WS* /[^{}:]+/ WS*
