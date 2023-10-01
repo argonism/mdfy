@@ -82,10 +82,10 @@ print(MdTable({"head1": "content", "head2": "content"}))
 With MdText, you can flexibly specify text styles in a way similar to python's string formatting.
 
 ```python
-MdText("{a family:underline} of {plain-text formatting syntaxes:bold} that optionally can be {converted to {formal:italic} {markup languages:bold}:underline} such as {HTML:strong}")
+MdText("{a family:quote} of {plain-text formatting syntaxes:bold} that optionally can be {converted to {formal:italic} {markup languages:bold}:not} such as {HTML:strong}")
 ```
 
-<u>a family</u> of **plain-text formatting syntaxes** that optionally can be <u>converted to _formal_ **markup languages**</u> such as **_HTML_**
+`a family` of **plain-text formatting syntaxes** that optionally can be ~~converted to _formal_ **markup languages**~~ such as **_HTML_**
 
 ## MdTable
 
