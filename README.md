@@ -8,11 +8,15 @@
 
 # mdfy
 
-<!-- ![Python Version](https://img.shields.io/badge/Python-3.8+-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Last Commit](https://img.shields.io/github/last-commit/argonism/mdfy)
-![Issues](https://img.shields.io/github/issues/your_username/mdfy) -->
+<p align="center">
+    <img alt="test" src="https://img.shields.io/github/actions/workflow/status/argonism/mdfy/test_for_pr.yml?logo=pytest&label=test&color=green">
+    <img alt="latest version" src="https://img.shields.io/github/v/tag/argonism/mdfy?logo=pypi&logoColor=white&label=latest%20version">
+    <img alt="issues" src="https://img.shields.io/github/issues/argonism/mdfy">
+    <img alt="PyPI dialy downloads" src="https://img.shields.io/pypi/dd/mdfy">
+    <img alt="PyPI weekly downloads" src="https://img.shields.io/pypi/dw/mdfy">
+    <img alt="PyPI monthly downloads" src="https://img.shields.io/pypi/dm/mdfy">
 
+</p>
 Transform text into beautiful markdown, effortlessly.
 
 <!-- <p align="center">
