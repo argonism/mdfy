@@ -1,4 +1,10 @@
-![mdfy logo](teaser.png)
+<p align="center">
+  <br/>
+  <br/>
+  <picture>
+    <img alt="mdfy teaser" src="https://raw.githubusercontent.com/argonism/mdfy/main/teaser.png" style="max-width: 85%;">
+  </picture>
+</p>
 
 # mdfy
 
@@ -149,5 +155,3 @@ We welcome contributions!
 ## 📜 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
