@@ -2,7 +2,7 @@
   <br/>
   <br/>
   <picture>
-    <img alt="mdfy teaser" src="https://raw.githubusercontent.com/argonism/mdfy/main/teaser.png" style="max-width: 85%;">
+    <img alt="mdfy teaser" src="mdfy.logo.star.teaser.resized.png" style="max-width: 100%;">
   </picture>
 </p>
 
