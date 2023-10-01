@@ -43,14 +43,14 @@ pip install mdfy
 Here's a quick start guide to get you up and running!
 
 ```python
-from mdfy import Mdfier, MdText, MdHeader
+from mdfy import Mdfier, MdText, MdHeader, MdTable
 
 contents = [
   MdHeader("Hello, MDFY!"),
-  MdText("{Life:bold} is {like:italic} a bicycle.")
-  MdTable(MdTable({"head1": "content", "head2": "content"}))
+  MdText("{Life:bold} is {like:italic} a bicycle."),
+  MdTable({"head1": "content", "head2": "content"})
 ]
-Mdfy("markdown.md").write(contents)
+Mdfier("markdown.md").write(contents)
 
 # => markdown.md
 #
