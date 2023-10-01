@@ -102,10 +102,10 @@ To transpose a table, all you need to do is pass True to the transpose parameter
 ```python
 print(MdTable(data, transpose=True))
 
-# | Key | Value | Value | Value |
+# | Key | Value 0 | Value 1 | Value 2 |
 # | --- | --- | --- | --- |
-# | name | John | Jane | Jack |
-# | age | 30 | 25 | 40 |
+# | precision | 0.845 | 0.637 | 0.71 |
+# | Recall | 0.662 | 0.802 | 0.68 |
 
 # And you can specify header labels when transpose
 labels = ["Metrics", "Model 1", "Model 2", "Model 3"]
