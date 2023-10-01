@@ -33,4 +33,4 @@ jobs:
           poetry install
 
       - name: Test with tox
-        run: python -m tox
+        run: poetry run tox
