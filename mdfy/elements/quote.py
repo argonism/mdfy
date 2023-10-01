@@ -2,9 +2,14 @@ from ._base import MdElement
 
 
 class MdQuote(MdElement):
-    def __init__(self, content):
-        """
-        Initializes an instance of the MdQuote class to represent a Markdown blockquote.
+    """Represents a Markdown blockquote.
+
+    Attributes:
+        content (str or MdElement): The content of the quote.
+    """
+
+    def __init__(self, content: str) -> None:
+        """Initializes an instance of the MdQuote class to represent a Markdown blockquote.
 
         Args:
             content (str or MdElement): The content of the quote.
@@ -12,8 +17,7 @@ class MdQuote(MdElement):
         self.content = content
 
     def __str__(self) -> str:
-        """
-        Returns a string representation of the blockquote in Markdown format.
+        """Returns a string representation of the blockquote in Markdown format.
 
         Returns:
             str: String representation of the blockquote.

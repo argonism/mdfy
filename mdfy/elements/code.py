@@ -6,9 +6,16 @@ logger = logging.getLogger(__name__)
 
 
 class MdCode(MdElement):
-    def __init__(self, code: str, inline: bool = False, syntax: str = ""):
-        """
-        Initializes an instance of the MdCode class to represent Markdown code or code block.
+    """Represents Markdown code or code block.
+
+    Attributes:
+        code (str): The code string.
+        inline (bool): Determines if the code should be represented as inline or block.
+        syntax (str): The programming language syntax for the code block.
+    """
+
+    def __init__(self, code: str, inline: bool = False, syntax: str = "") -> None:
+        """Initializes an instance of the MdCode class to represent Markdown code or code block.
 
         Args:
             code (str): The code string.
@@ -31,8 +38,7 @@ class MdCode(MdElement):
             self.inline = False
 
     def __str__(self) -> str:
-        """
-        Returns a string representation of the code in Markdown format.
+        """Returns a string representation of the code in Markdown format.
 
         Returns:
             str: String representation of the code.

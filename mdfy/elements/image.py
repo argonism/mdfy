@@ -6,9 +6,15 @@ logger = logging.getLogger(__name__)
 
 
 class MdImage(MdElement):
-    def __init__(self, src: str, alt: str = ""):
-        """
-        Initializes an instance of the MdImage class to represent a Markdown image.
+    """Represents a Markdown image.
+
+    Attributes:
+        src (str): The source URL or path of the image.
+        alt (str): The alternative text for the image.
+    """
+
+    def __init__(self, src: str, alt: str = "") -> None:
+        """Initializes an instance of the MdImage class to represent a Markdown image.
 
         Args:
             src (str): The source URL or path of the image.
@@ -18,8 +24,7 @@ class MdImage(MdElement):
         self.alt = alt
 
     def __str__(self) -> str:
-        """
-        Returns a string representation of the image in Markdown format.
+        """Returns a string representation of the image in Markdown format.
 
         Returns:
             str: String representation of the image.

@@ -2,9 +2,15 @@ from ._base import MdElement
 
 
 class MdHeader(MdElement):
-    def __init__(self, content: str, level: int = 1):
-        """
-        Initializes an instance of the MdHeader class to represent a Markdown header.
+    """Represents a Markdown header.
+
+    Attributes:
+        content (str): The content of the header.
+        level (int): The header level.
+    """
+
+    def __init__(self, content: str, level: int = 1) -> None:
+        """Initializes an instance of the MdHeader class to represent a Markdown header.
 
         Args:
             content (str): The content of the header.
@@ -14,8 +20,7 @@ class MdHeader(MdElement):
         self.level = level
 
     def __str__(self) -> str:
-        """
-        Returns a string representation of the header in Markdown format.
+        """Returns a string representation of the header in Markdown format.
 
         Returns:
             str: String representation of the header.

@@ -1,6 +1,6 @@
+import abc
 import re
-import string
-from typing import Optional
+from typing import Dict, Optional
 
 from lark import Lark, Token, Tree
 from lark.visitors import Interpreter
@@ -15,11 +15,11 @@ class MdTextInterpreter(Interpreter):
         style_patterns (Dict[str, str]): A dictionary mapping style names to formatting strings.
     """
 
-    def __init__(self, style_patterns: dict):
+    def __init__(self, style_patterns: Dict[str, str]):
         super().__init__()
         self.style_patterns = style_patterns
 
-    def process_content_tree(self, tree):
+    def process_content_tree(self, tree: Tree) -> str:
         """Processes a subtree for content in yled text.
 
         Args:
@@ -53,12 +53,15 @@ class MdTextInterpreter(Interpreter):
         for tree in content:
             target_text += self.process_content_tree(tree)
 
+        if not isinstance(style, Token):
+            raise ValueError(f"Expected style to be a Token, got {style.__class__}")
+
         if style.value in self.style_patterns:
             return self.style_patterns[style.value].format(target_text)
         else:
             return target_text
 
-    def start(self, tree: Tree):
+    def start(self, tree: Tree) -> str:
         return "".join(self.visit_children(tree))
 
 
@@ -76,7 +79,23 @@ grammar = r"""
 """
 
 
-class MdTextFormatter(string.Formatter):
+class MdFormatter(abc.ABC):
+    """Abstract base class for Markdown formatters."""
+
+    @abc.abstractmethod
+    def format(self, text: str) -> str:
+        """Formats the text and returns the formatted text.
+
+        Args:
+            text (str): The text to be formatted.
+
+        Returns:
+            str: The formatted text.
+        """
+        raise NotImplementedError
+
+
+class MdTextFormatter(MdFormatter):
     """Markdown Text Formatter to handle text styling based on a specified grammar and style patterns.
 
     Attributes:
@@ -151,7 +170,7 @@ class MdTextFormatter(string.Formatter):
             str: The formatted text.
         """
         parsed = self.parse(text)
-        result = self.interpreter.visit(parsed)
+        result: str = self.interpreter.visit(parsed)
         return result
 
     def parse(self, text: str) -> Tree:
@@ -171,10 +190,18 @@ class MdText(MdElement):
 
     Attributes:
         content (str): The content string containing potential style markers.
-        formatter (string.Formatter): The formatter to apply styling to the content.
+        formatter (MdFormatter): The formatter to apply styling to the content.
     """
 
-    def __init__(self, content: str, formatter: string.Formatter = MdTextFormatter()):
+    def __init__(self, content: str, formatter: MdFormatter = MdTextFormatter()):
+        """Initializes an instance of the MdText class to handle the text and styling of text.
+
+        Args:
+            content (str): The content string containing potential style markers.
+            formatter (MdFormatter, optional): The formatter to apply styling to the content.
+                                                     Defaults to MdTextFormatter().
+        """
+
         self.content = content
         self.formatter = formatter
 

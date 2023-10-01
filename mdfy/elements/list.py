@@ -11,9 +11,8 @@ class MdList(MdElement):
         depth: int = 0,
         indent: int = 4,
         numbered: bool = False,
-    ):
-        """
-        Initialize a MdList instance.
+    ) -> None:
+        """Initialize a MdList instance.
 
         Args:
             items (List[Union[str, MdList]]): List of items, where each item can be a string or another MdList.
@@ -28,8 +27,7 @@ class MdList(MdElement):
         self.indent = indent
 
     def _process_items(self, items: TypedList[Union[str, "MdList"]], depth: int) -> str:
-        """
-        Process the given list of items and convert them to a markdown string.
+        """Process the given list of items and convert them to a markdown string.
 
         Args:
             items (List[Union[str, MdList]]): List of items to be processed.
@@ -41,8 +39,7 @@ class MdList(MdElement):
         return "\n".join(f"{self._process_item(item, depth)}" for item in items)
 
     def _process_item(self, item: Union[str, "MdList"], depth: int) -> str:
-        """
-        Process an individual item. If the item is a list, process it recursively.
+        """Process an individual item. If the item is a list, process it recursively.
 
         Args:
             item (Union[str, MdList]): The item to be processed.
@@ -60,7 +57,8 @@ class MdList(MdElement):
         return f"{prefix}{marker} {item}"
 
     def __str__(self) -> str:
-        """
+        """Returns a string representation of the list in Markdown format.
+
         Returns:
             str: Formatted markdown string for the entire list.
         """

@@ -10,6 +10,7 @@ class MdTable(MdElement):
     Args:
         data (dict or list): The data to convert.
         transpose (bool, optional): If True, transpose the table. Defaults to False.
+        labels (list[str], optional): Label for header when transposed. Defaults to 'Key' and 'value {i}'.
         precision (Optional[int]): Number of decimal places for floats. If None, values are not formatted.
     """
 
@@ -18,9 +19,17 @@ class MdTable(MdElement):
         data: Union[Dict[str, Any], List[Dict[str, Any]]],
         transpose: bool = False,
         labels: Optional[List[str]] = None,
-        output_file: Union[None, str] = None,
         precision: Union[None, int] = None,
     ):
+        """Initialize a MdTable instance.
+
+        Args:
+            data (Union[Dict[str, Any], List[Dict[str, Any]]]): The data to convert.
+            transpose (bool, optional): If True, transpose the table. Defaults to False.
+            labels (list[str], optional): Label for header when transposed. Defaults to 'Key' and 'value {i}'.
+            precision (Optional[int]): Number of decimal places for floats. If None, values are not formatted.
+        """
+
         if isinstance(data, list):
             pass
         elif isinstance(data, dict):
@@ -36,7 +45,11 @@ class MdTable(MdElement):
         self.labels = labels
 
     def _flatten_data(self, data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """Flatten nested dictionaries in the data."""
+        """Flatten nested dictionaries in the data.
+
+        Args:
+            data (List[Dict[str, Any]]): The data to flatten.
+        """
         flattened_data = []
         for entry in data:
             flattened_data.append(self._flatten_dict(entry))
@@ -119,21 +132,21 @@ class MdTable(MdElement):
 
         return headers + "\n" + table_rows
 
-    def _transpose_data(self):
+    def _transpose_data(self) -> Dict[str, List[Any]]:
         """Transpose the data for creating a transposed table.
 
         Returns:
             dict: Transposed data as a dictionary.
         """
         headers = self.data[0].keys()
-        transposed_data = {header: [] for header in headers}
+        transposed_data: Dict[str, list] = {header: [] for header in headers}
         for row in self.data:
             for key, value in row.items():
                 transposed_data[key].append(value)
 
         return transposed_data
 
-    def _create_transposed_headers(self, labels: str) -> str:
+    def _create_transposed_headers(self, labels: List[str]) -> str:
         """Create headers for the transposed table.
 
         Args:
@@ -212,13 +225,11 @@ class MdTable(MdElement):
             )
         return "\n".join(rows)
 
-    def _create_table_rows(
-        self, data: Union[Dict[str, Any], List[Dict[str, Any]]]
-    ) -> str:
+    def _create_table_rows(self, data: Dict[str, List[Any]]) -> str:
         """Create table rows for the given data.
 
         Args:
-            data (Union[Dict[str, Any], List[Dict[str, Any]]]): Data to be used for row creation.
+            data (Dict[str, List[Any]]): Data to be used for row creation.
 
         Returns:
             str: Formatted table rows.
@@ -234,5 +245,5 @@ class MdTable(MdElement):
             )
         return "\n".join(rows)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.dict_to_md_table(transpose=self.transpose, precision=self.precision)

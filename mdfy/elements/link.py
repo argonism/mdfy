@@ -1,12 +1,20 @@
 import warnings
+from typing import Optional
 
 from ._base import MdElement
 
 
 class MdLink(MdElement):
-    def __init__(self, url: str, text: str = "", title: str = None):
-        """
-        Initializes an instance of the MdLink class to represent a Markdown link.
+    """Represents a Markdown link.
+
+    Attributes:
+        url (str): The URL of the link.
+        text (str): The display text for the link.
+        title (str): The title attribute for the link.
+    """
+
+    def __init__(self, url: str, text: str = "", title: Optional[str] = None) -> None:
+        """Initializes an instance of the MdLink class to represent a Markdown link.
 
         Args:
             url (str): The URL of the link.
@@ -18,8 +26,7 @@ class MdLink(MdElement):
         self.title = title
 
     def __str__(self) -> str:
-        """
-        Returns a string representation of the link in Markdown format.
+        """Returns a string representation of the link in Markdown format.
 
         Returns:
             str: String representation of the link.
