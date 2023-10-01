@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "mdfy"
 version = "0.1.0"
-description = "Effortlessly convert nested Python dictionaries into intuitive Markdown tables."
+description = "Transform text into beautiful markdown, effortlessly."
 authors = ["k-ush <argoooooon@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<4.0"
+python = ">=3.7,<4.0"
 lark = "^1.1.7"
 
 
@@ -19,6 +19,7 @@ flake8 = "^6.1.0"
 sphinx = "^7.2.6"
 sphinx-rtd-theme = "^1.3.0"
 sphinx-multiversion = "^0.2.4"
+tox = "^4.11.3"
 
 [build-system]
 requires = ["poetry-core"]
