@@ -6,8 +6,6 @@
   </picture>
 </p>
 
-# mdfy
-
 <p align="center">
     <img alt="test" src="https://img.shields.io/github/actions/workflow/status/argonism/mdfy/test_for_pr.yml?logo=pytest&label=test&color=green">
     <img alt="latest version" src="https://img.shields.io/github/v/tag/argonism/mdfy?logo=pypi&logoColor=white&label=latest%20version">
@@ -17,6 +15,9 @@
     <img alt="PyPI monthly downloads" src="https://img.shields.io/pypi/dm/mdfy">
 
 </p>
+
+# mdfy
+
 Transform text into beautiful markdown, effortlessly.
 
 <!-- <p align="center">
@@ -143,6 +144,10 @@ print(MdTable(data, transpose=True, labels=labels, precision=3))
 # | precision | 0.845 | 0.637 | 0.718 |
 # | Recall | 0.663 | 0.803 | 0.680 |
 ```
+
+## 📖 Documentation
+
+Check out our [full documentation](https://mdfy.readthedocs.io/en/latest/#) for detailed guides and API references.
 
 ## ✅ Testing
 
