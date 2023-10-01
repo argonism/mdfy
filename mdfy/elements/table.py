@@ -12,6 +12,81 @@ class MdTable(MdElement):
         transpose (bool, optional): If True, transpose the table. Defaults to False.
         labels (list[str], optional): Label for header when transposed. Defaults to 'Key' and 'value {i}'.
         precision (Optional[int]): Number of decimal places for floats. If None, values are not formatted.
+
+    Examples:
+        >>> data = {
+        ...     "Name": "John Doe",
+        ...     "Age": 30,
+        ...     "Occupation": "Software Engineer",
+        ... }
+        >>> table = MdTable(data)
+        >>> print(table)
+        | Name | Age | Occupation |
+        | --- | --- | --- |
+        | John Doe | 30 | Software Engineer |
+        >>> table = MdTable(data, transpose=True)
+        >>> print(table)
+        | Key | Value 0 | Value 1 | Value 2 |
+        | --- | --- | --- | --- |
+        | Name | John Doe |  |  |
+        | Age | 30 |  |  |
+        | Occupation | Software Engineer |  |  |
+        >>> table = MdTable(data, transpose=True, labels=["Header", "Value"])
+        >>> print(table)
+        | Header | Value |
+        | --- | --- |
+        | Name | John Doe |
+        | Age | 30 |
+        | Occupation | Software Engineer |
+        >>> # you can use nested dict
+        >>> data = {
+        ...     "Name": "John Doe",
+        ...     "Age": 30,
+        ...     "Occupation": "Software Engineer",
+        ...     "Address": {
+        ...         "Street": "123 Main St",
+        ...         "City": "Anytown",
+        ...         "State": "CA",
+        ...         "Zip": 12345,
+        ...     },
+        ... }
+        >>> table = MdTable(data)
+        >>> print(table)
+        | Name | Age | Occupation | Address.Street | Address.City | Address.State | Address.Zip |
+        | --- | --- | --- | --- | --- | --- | --- |
+        | John Doe | 30 | Software Engineer | 123 Main St | Anytown | CA | 12345 |
+        >>> # you can also use a list of dicts
+        >>> data = [
+        ...     {
+        ...         "Name": "John Doe",
+        ...         "Age": 30,
+        ...         "Occupation": "Software Engineer",
+        ...     },
+        ...     {
+        ...         "Name": "Jane Doe",
+        ...         "Age": 25,
+        ...         "Occupation": "Data Scientist",
+        ...     },
+        ... ]
+        >>> table = MdTable(data)
+        >>> print(table)
+        | Name | Age | Occupation |
+        | --- | --- | --- |
+        | John Doe | 30 | Software Engineer |
+        | Jane Doe | 25 | Data Scientist |
+        >>> # you can specify the precision for floats
+        >>> data = {
+        ...     "Name": "John Doe",
+        ...     "Age": 30,
+        ...     "Occupation": "Software Engineer",
+        ...     "Height": 1.83,
+        ...     "Weight": 80.5,
+        ... }
+        >>> table = MdTable(data, precision=2)
+        >>> print(table)
+        | Name | Age | Occupation | Height | Weight |
+        | --- | --- | --- | --- | --- |
+        | John Doe | 30 | Software Engineer | 1.83 | 80.50 |
     """
 
     def __init__(

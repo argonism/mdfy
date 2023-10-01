@@ -7,6 +7,17 @@ class MdHeader(MdElement):
     Attributes:
         content (str): The content of the header.
         level (int): The header level.
+
+    Examples:
+        >>> from mdfy.elements import MdHeader
+        >>>
+        >>> header = MdHeader("This is a header")
+        >>> print(header)
+        # This is a header
+        >>>
+        >>> header = MdHeader("This is a header", level=2)
+        >>> print(header)
+        ## This is a header
     """
 
     def __init__(self, content: str, level: int = 1) -> None:

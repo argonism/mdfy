@@ -6,6 +6,18 @@ class MdQuote(MdElement):
 
     Attributes:
         content (str or MdElement): The content of the quote.
+
+    Examples:
+        >>> from mdfy.elements import MdQuote
+        >>>
+        >>> quote = MdQuote("This is a quote.")
+        >>> print(quote)
+        > This is a quote.
+        >>>
+        >>> quote = MdQuote("This is a quote.\\nThis is another line.")
+        >>> print(quote)
+        > This is a quote.
+        > This is another line.
     """
 
     def __init__(self, content: str) -> None:

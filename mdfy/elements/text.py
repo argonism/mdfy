@@ -191,6 +191,34 @@ class MdText(MdElement):
     Attributes:
         content (str): The content string containing potential style markers.
         formatter (MdFormatter): The formatter to apply styling to the content.
+
+    Examples:
+        >>> text = MdText("This is {bold:bold} text.")
+        >>> print(text)
+        This is **bold** text.
+        >>> MdText("{This is underline text:underline}.").to_str()
+        <u>This is underline text</u>.
+        >>> MdText("{This is {nested:bold} style text:underline}.").to_str()
+        <u>This is **nested** style text</u>.
+        >>> MdText("You can use aliases e.g. {st:st}  {bd:bo}.").to_str()
+        You can use aliases e.g. ***st***  **bd**.
+
+    Note:
+        Available style patterns:
+            - strong: bold text (e.g. `***strong***`)
+            - bold: bold text (e.g. `**bold**`)
+            - italic: italic text (e.g. {*italic*})
+            - not: strike-through text (e.g. `~~strike-through~~`)
+            - underline: underlined text (e.g. `<u>underlined</u>`)
+            - quote: quoted text (e.g. `\`quoted\``)
+
+        Also, the following aliases are available for the style patterns:
+            - strong: st
+            - bold: bo, bd
+            - italic: it
+            - not: no, nt
+            - underline: un, ul
+            - quote: qu, qt
     """
 
     def __init__(self, content: str, formatter: MdFormatter = MdTextFormatter()):

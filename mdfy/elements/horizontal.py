@@ -8,6 +8,17 @@ class MdHorizontal(MdElement):
 
     Attributes:
         content (str): The content for representing the horizontal rule.
+
+    Examples:
+        >>> from mdfy.elements import MdHorizontal
+        >>>
+        >>> horizontal = MdHorizontal()
+        >>> print(horizontal)
+        ***
+        >>>
+        >>> horizontal = MdHorizontal("---")
+        >>> print(horizontal)
+        ---
     """
 
     def __init__(self, content: str = "***") -> None:

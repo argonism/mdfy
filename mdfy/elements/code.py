@@ -12,6 +12,16 @@ class MdCode(MdElement):
         code (str): The code string.
         inline (bool): Determines if the code should be represented as inline or block.
         syntax (str): The programming language syntax for the code block.
+
+    Examples:
+        >>> code = MdCode("print('Hello World!')", inline=True)
+        >>> print(code)
+        `print('Hello World!')`
+        >>> code = MdCode("print('Hello World!')", inline=False, syntax="python")
+        >>> print(code)
+        ```python
+        print('Hello World!')
+        ```
     """
 
     def __init__(self, code: str, inline: bool = False, syntax: str = "") -> None:

@@ -11,6 +11,17 @@ class MdImage(MdElement):
     Attributes:
         src (str): The source URL or path of the image.
         alt (str): The alternative text for the image.
+
+    Examples:
+        >>> from mdfy.elements import MdImage
+        >>>
+        >>> image = MdImage("https://example.com/image.png")
+        >>> print(image)
+        ![](https://example.com/image.png)
+        >>>
+        >>> image = MdImage("https://example.com/image.png", alt="Example image")
+        >>> print(image)
+        ![Example image](https://example.com/image.png)
     """
 
     def __init__(self, src: str, alt: str = "") -> None:

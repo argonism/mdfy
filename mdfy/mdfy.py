@@ -15,6 +15,22 @@ class Mdfier:
 
     Attributes:
         filepath (Path): The path to the file.
+
+    Examples:
+        >>> from mdfy import Mdfier
+        >>> from mdfy.elements import MdHeader, MdQuote
+        >>>
+        >>> mdfier = Mdfier("README.md")
+        >>> mdfier.write([
+        ...     MdHeader("Hello, world!", 1),
+        ...     MdQuote("This is a quote.")
+        ... ])
+        >>>
+        >>> with open("README.md") as file:
+        ...     print(file.read())
+        ...
+        # Hello, world!
+        > This is a quote.
     """
 
     def __init__(self, filepath: Union[str, Path]) -> None:

@@ -5,6 +5,40 @@ from ._base import MdElement
 
 
 class MdList(MdElement):
+    """Represents a Markdown list.
+
+    Attributes:
+        items (List[Union[str, MdList]]): List of items, where each item can be a string or another MdList.
+        depth (int): Current depth of the list.
+        indent (int): indent size of the list.
+        numbered (bool): If True, the list will be numbered. Otherwise, it will be bulleted.
+
+    Examples:
+        >>> from mdfy.elements import MdList
+        >>>
+        >>> list = MdList(["item 1", "item 2"])
+        >>> print(list)
+        - item 1
+        - item 2
+        >>>
+        >>> list = MdList(["item 1", "item 2"], numbered=True)
+        >>> print(list)
+        1. item 1
+        2. item 2
+        >>>
+        >>> list = MdList([
+        ...     "item 1",
+        ...     [
+        ...         "item 2.1",
+        ...         "item 2.2"
+        ...     ]
+        ... ])
+        >>> print(list)
+        - item 1
+            - item 2.1
+            - item 2.2
+    """
+
     def __init__(
         self,
         items: TypedList[Union[str, "MdList"]],

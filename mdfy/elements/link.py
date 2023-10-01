@@ -11,6 +11,17 @@ class MdLink(MdElement):
         url (str): The URL of the link.
         text (str): The display text for the link.
         title (str): The title attribute for the link.
+
+    Examples:
+        >>> from mdfy.elements import MdLink
+        >>>
+        >>> link = MdLink("https://www.example.com", "example")
+        >>> print(link)
+        [example](https://www.example.com)
+        >>>
+        >>> link = MdLink("https://www.example.com", "example", title="example")
+        >>> print(link)
+        [example](https://www.example.com "example")
     """
 
     def __init__(self, url: str, text: str = "", title: Optional[str] = None) -> None:
