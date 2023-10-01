@@ -34,6 +34,10 @@ def test_nested_style():
             "This text has : in {not styled:bold} part",
             "This text has : in **not styled** part",
         ),
+        (
+            "{ユニコード文字列:underline}に対応してるか",
+            "<u>ユニコード文字列</u>に対応してるか",
+        ),
     ],
 )
 def test_various_texts(input_text, expected_output):
