@@ -1,6 +1,6 @@
 import tempfile
 
-from mdfy import Mdfy, MdHeader, MdText
+from mdfy import Mdfier, MdHeader, MdText
 
 
 def test_mdfy_write():
@@ -9,7 +9,7 @@ def test_mdfy_write():
             MdHeader("Hello, MDFY!"),
             MdText("{Life:bold} is {like:italic} a bicycle."),
         ]
-        Mdfy(tmp.name).write(contents)
+        Mdfier(tmp.name).write(contents)
 
         tmp.seek(0)
         lines = tmp.readlines()
