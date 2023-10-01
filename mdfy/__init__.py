@@ -10,4 +10,4 @@ from .elements import (
     MdTable,
     MdText,
 )
-from .mdfy import Mdfy
+from .mdfy import Mdfier
