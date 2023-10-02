@@ -7,7 +7,7 @@ def test_mdfy_write():
     with tempfile.NamedTemporaryFile("w+", delete=True) as tmp:
         contents = [
             MdHeader("Hello, MDFY!"),
-            MdText("{Life:bold} is {like:italic} a bicycle."),
+            MdText("[Life:bold] is [like:italic] a bicycle."),
         ]
         Mdfier(tmp.name).write(contents)
 

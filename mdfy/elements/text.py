@@ -67,12 +67,12 @@ class MdTextInterpreter(Interpreter):
 
 grammar = r"""
     start: TEXT? styled_text? (start)* TEXT?
-    styled_text: LBRACE content+ COLON INTEXT RBRACE
+    styled_text: LBRAK content+ COLON INTEXT RBRAK
     content: INTEXT | INTEXT? styled_text
-    TEXT:   WS* /[^{}]+/ WS*
-    INTEXT: WS* /[^{}:]+/ WS*
-    LBRACE: "{"
-    RBRACE: "}"
+    TEXT:   WS* /[^\[\]]+/ WS*
+    INTEXT: WS* /[^\[\]:]+/ WS*
+    LBRAK: "["
+    RBRAK: "]"
     COLON: ":"
 
     %import common.WS
@@ -193,24 +193,24 @@ class MdText(MdElement):
         formatter (MdFormatter): The formatter to apply styling to the content.
 
     Examples:
-        >>> text = MdText("This is {bold:bold} text.")
+        >>> text = MdText("This is [bold:bold] text.")
         >>> print(text)
         This is **bold** text.
-        >>> MdText("{This is underline text:underline}.").to_str()
+        >>> MdText("[This is underline text:underline].").to_str()
         <u>This is underline text</u>.
-        >>> MdText("{This is {nested:bold} style text:underline}.").to_str()
+        >>> MdText("[This is [nested:bold] style text:underline].").to_str()
         <u>This is **nested** style text</u>.
-        >>> MdText("You can use aliases e.g. {st:st}  {bd:bo}.").to_str()
+        >>> MdText("You can use aliases e.g. [st:st]  [bd:bo].").to_str()
         You can use aliases e.g. ***st***  **bd**.
 
     Note:
         Available style patterns:
             - strong: bold text (e.g. `***strong***`)
             - bold: bold text (e.g. `**bold**`)
-            - italic: italic text (e.g. {*italic*})
+            - italic: italic text (e.g. [*italic*])
             - not: strike-through text (e.g. `~~strike-through~~`)
             - underline: underlined text (e.g. `<u>underlined</u>`)
-            - quote: quoted text (e.g. `\`quoted\``)
+            - quote: quoted text (e.g. `quoted`)
 
         Also, the following aliases are available for the style patterns:
             - strong: st

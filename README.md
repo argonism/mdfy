@@ -48,8 +48,8 @@ from mdfy import Mdfier, MdText, MdHeader, MdTable
 
 contents = [
   MdHeader("Hello, MDFY!"),
-  MdText("{Life:bold} is {like:italic} a bicycle."),
-  MdTable({"head1": "content", "head2": "content"})
+  MdText("[Life:bold] is [like:italic] a bicycle."),
+  MdTable(["head1": "content", "head2": "content"])
 ]
 Mdfier("markdown.md").write(contents)
 
@@ -65,8 +65,8 @@ Each mdfy element is string-convertible and can operate independently!
 from mdfy import MdText, MdHeader, MdTable
 
 print(MdHeader("Hello, MDFY!"))
-print(MdText("{Life:bold} is {like:italic} a bicycle."))
-print(MdTable({"head1": "content", "head2": "content"}))
+print(MdText("[Life:bold] is [like:italic] a bicycle."))
+print(MdTable(["head1": "content", "head2": "content"]))
 
 # => result
 #
@@ -82,7 +82,7 @@ print(MdTable({"head1": "content", "head2": "content"}))
 With MdText, you can flexibly specify text styles in a way similar to python's string formatting.
 
 ```python
-MdText("{a family:quote} of {plain-text formatting syntaxes:bold} that optionally can be {converted to {formal:italic} {markup languages:bold}:not} such as {HTML:strong}")
+MdText("[a family:quote] of [plain-text formatting syntaxes:bold] that optionally can be [converted to [formal:italic] [markup languages:bold]:not] such as [HTML:strong]")
 ```
 
 `a family` of **plain-text formatting syntaxes** that optionally can be ~~converted to _formal_ **markup languages**~~ such as **_HTML_**

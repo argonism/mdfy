@@ -34,8 +34,8 @@ TEST_CASES = [
     },
     {
         "items": [
-            MdText("That's a {bold:bold} statement"),
-            MdText("{B:italic}"),
+            MdText("That's a [bold:bold] statement"),
+            MdText("[B:italic]"),
             MdText("Plain text"),
         ],
         "numbered": True,

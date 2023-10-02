@@ -16,7 +16,7 @@ quote for testing."""
 
 
 def test_mdquote_with_md_element():
-    content = MdText("This is a {quote:bold} using MdText.")
+    content = MdText("This is a [quote:bold] using MdText.")
     quote = MdQuote(content)
     assert str(quote) == "> This is a **quote** using MdText."
 
