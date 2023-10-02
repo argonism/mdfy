@@ -10,10 +10,12 @@
     <img alt="test" src="https://img.shields.io/github/actions/workflow/status/argonism/mdfy/test_for_pr.yml?logo=pytest&label=test&color=green">
     <img alt="latest version" src="https://img.shields.io/github/v/tag/argonism/mdfy?logo=pypi&logoColor=white&label=latest%20version">
     <img alt="issues" src="https://img.shields.io/github/issues/argonism/mdfy">
+    <a href='https://mdfy.readthedocs.io/en/latest/?badge=latest'>
+        <img src='https://readthedocs.org/projects/mdfy/badge/?version=latest' alt='Documentation Status' />
+    </a>
     <img alt="PyPI dialy downloads" src="https://img.shields.io/pypi/dd/mdfy">
     <img alt="PyPI weekly downloads" src="https://img.shields.io/pypi/dw/mdfy">
     <img alt="PyPI monthly downloads" src="https://img.shields.io/pypi/dm/mdfy">
-
 </p>
 
 # mdfy
@@ -87,6 +89,8 @@ MdText("[a family:quote] of [plain-text formatting syntaxes:bold] that optionall
 
 `a family` of **plain-text formatting syntaxes** that optionally can be ~~converted to _formal_ **markup languages**~~ such as **_HTML_**
 
+See [MdText document](https://mdfy.readthedocs.io/en/latest/mdfy.elements.text.html#mdfy.elements.text.MdText) for details
+
 ## MdTable
 
 MdTable offers a flexible way to convert a Python dict to a Markdown table.
@@ -144,6 +148,8 @@ print(MdTable(data, transpose=True, labels=labels, precision=3))
 # | precision | 0.845 | 0.637 | 0.718 |
 # | Recall | 0.663 | 0.803 | 0.680 |
 ```
+
+See [MdTable document](https://mdfy.readthedocs.io/en/latest/mdfy.elements.table.html#mdfy.elements.table.MdTable) for details
 
 ## 📖 Documentation
 
