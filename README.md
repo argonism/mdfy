@@ -55,6 +55,12 @@ contents = [
 ]
 Mdfier("markdown.md").write(contents)
 
+# or use a with statement to write iteratively
+
+with Mdfier("markdown.md") as md:
+  for content in contents:
+    md.write(MdText(text))
+
 # => markdown.md
 #
 # # Hello, MDFY!
