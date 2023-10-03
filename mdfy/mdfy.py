@@ -42,6 +42,28 @@ class Mdfier:
 
         self.filepath = Path(filepath)
         self.filepath.parent.mkdir(parents=True, exist_ok=True)
+        self.file_object = None
+
+    def __enter__(self) -> "Mdfier":
+        """Returns the Mdfier instance.
+
+        Returns:
+            Mdfier: The Mdfier instance.
+        """
+
+        self.file_object = self.filepath.open("w")
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback) -> None:
+        """Writes the Markdown content to the file.
+
+        Args:
+            exc_type (type): The type of the exception.
+            exc_value (Exception): The exception that was raised.
+            traceback (Traceback): The traceback of the exception.
+        """
+        self.file_object.close()
+        return
 
     @classmethod
     def stringify(cls, contents: List[Union[str, MdElement]]) -> str:
@@ -53,13 +75,17 @@ class Mdfier:
 
         return "\n".join([str(item) for item in contents])
 
-    def write(self, contents: List[Union[str, MdElement]]) -> None:
+    def write(self, contents: Union[List[Union[str, MdElement]], MdElement]) -> None:
         """Writes the given Markdown content to the file.
 
         Args:
             content (Union[str, MdElement]): The Markdown content to write to the file.
         """
 
+        if not isinstance(contents, list):
+            contents = [contents]
         markdown = self.stringify(contents)
-        with open(self.filepath, "w") as file:
-            file.write(markdown + "\n")
+        if self.file_object is None:
+            self.filepath.write_text(markdown + "\n")
+        else:
+            self.file_object.write(markdown + "\n")
