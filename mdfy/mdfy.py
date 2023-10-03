@@ -1,5 +1,7 @@
+from io import TextIOWrapper
 from pathlib import Path
-from typing import List, Union
+from types import TracebackType
+from typing import List, Optional, Type, Union
 
 from .elements import MdElement
 
@@ -42,7 +44,7 @@ class Mdfier:
 
         self.filepath = Path(filepath)
         self.filepath.parent.mkdir(parents=True, exist_ok=True)
-        self.file_object = None
+        self.file_object: Optional[TextIOWrapper] = None
 
     def __enter__(self) -> "Mdfier":
         """Returns the Mdfier instance.
@@ -54,7 +56,12 @@ class Mdfier:
         self.file_object = self.filepath.open("w")
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback) -> None:
+    def __exit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_value: Optional[BaseException],
+        traceback: Optional[TracebackType],
+    ) -> None:
         """Writes the Markdown content to the file.
 
         Args:
@@ -62,8 +69,9 @@ class Mdfier:
             exc_value (Exception): The exception that was raised.
             traceback (Traceback): The traceback of the exception.
         """
+        if self.file_object is None:
+            return
         self.file_object.close()
-        return
 
     @classmethod
     def stringify(cls, contents: List[Union[str, MdElement]]) -> str:
