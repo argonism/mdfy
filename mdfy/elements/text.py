@@ -110,7 +110,7 @@ class MdTextFormatter(MdFormatter):
         "italic": "*{}*",
         "not": "~~{}~~",
         "underline": "<u>{}</u>",
-        "quote": "`{}`",
+        "code": "`{}`",
     }
 
     STYLE_ALIASES = {
@@ -119,7 +119,7 @@ class MdTextFormatter(MdFormatter):
         "italic": ["it"],
         "not": ["no", "nt"],
         "underline": ["un", "ul"],
-        "quote": ["qu", "qt"],
+        "code": ["cd", "quote"],
     }
 
     def __init__(
@@ -210,7 +210,7 @@ class MdText(MdElement):
             - italic: italic text (e.g. [*italic*])
             - not: strike-through text (e.g. `~~strike-through~~`)
             - underline: underlined text (e.g. `<u>underlined</u>`)
-            - quote: quoted text (e.g. `quoted`)
+            - code: inline code (e.g. `code`)
 
         Also, the following aliases are available for the style patterns:
             - strong: st
@@ -218,7 +218,7 @@ class MdText(MdElement):
             - italic: it
             - not: no, nt
             - underline: un, ul
-            - quote: qu, qt
+            - code: cd, quote
     """
 
     def __init__(self, content: str, formatter: MdFormatter = MdTextFormatter()):
