@@ -28,8 +28,8 @@ sphinx-multiversion = "^0.2.4"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-# [tool.poetry-version-plugin]
-# source = "git-tag"
+[tool.poetry-version-plugin]
+source = "git-tag"
 
 [tool.ruff]
 line-length = 88
