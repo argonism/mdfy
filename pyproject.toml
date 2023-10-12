@@ -6,6 +6,7 @@ authors = ["k-ush <argoooooon@gmail.com>"]
 readme = "README.md"
 homepage = "https://github.com/argonism/mdfy"
 repository = "https://github.com/argonism/mdfy"
+classifiers = ["Typing :: Typed"]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
