@@ -207,7 +207,7 @@ class MdText(MdElement):
         Available style patterns:
             - strong: bold text (e.g. `***strong***`)
             - bold: bold text (e.g. `**bold**`)
-            - italic: italic text (e.g. [*italic*])
+            - italic: italic text (e.g. `*italic*`)
             - not: strike-through text (e.g. `~~strike-through~~`)
             - underline: underlined text (e.g. `<u>underlined</u>`)
             - code: inline code (e.g. `code`)
