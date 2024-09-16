@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mdfy"
-version = "0.1.0"
+version = "0.5.0"
 description = "Transform text into beautiful markdown, effortlessly."
 authors = ["k-ush <argoooooon@gmail.com>"]
 readme = "README.md"
