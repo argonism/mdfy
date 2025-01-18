@@ -35,7 +35,7 @@ class Mdfier:
         > This is a quote.
     """
 
-    def __init__(self, filepath: Union[str, Path]) -> None:
+    def __init__(self, filepath: Union[str, Path], encoding: str = "utf-8") -> None:
         """Initializes an instance of the Mdfier class to write Markdown content to a file.
 
         Args:
@@ -45,6 +45,7 @@ class Mdfier:
         self.filepath = Path(filepath)
         self.filepath.parent.mkdir(parents=True, exist_ok=True)
         self.file_object: Optional[TextIOWrapper] = None
+        self._encoding = encoding
 
     def __enter__(self) -> "Mdfier":
         """Returns the Mdfier instance.
@@ -53,7 +54,7 @@ class Mdfier:
             Mdfier: The Mdfier instance.
         """
 
-        self.file_object = self.filepath.open("w")
+        self.file_object = self.filepath.open("w", encoding=self._encoding)
         return self
 
     def __exit__(
@@ -94,6 +95,6 @@ class Mdfier:
             contents = [contents]
         markdown = self.stringify(contents)
         if self.file_object is None:
-            self.filepath.write_text(markdown + "\n")
+            self.filepath.write_text(markdown + "\n", encoding=self._encoding)
         else:
             self.file_object.write(markdown + "\n")
