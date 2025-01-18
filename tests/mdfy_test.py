@@ -1,37 +1,40 @@
 import tempfile
+from pathlib import Path
 
 from mdfy import Mdfier, MdHeader, MdText
 
 
 def test_mdfy_write():
-    with tempfile.NamedTemporaryFile("w+", delete=True) as tmp:
+    with tempfile.TemporaryDirectory() as tmp_dir:
         contents = [
             MdHeader("Hello, MDFY!"),
             MdText("[Life:bold] is [like:italic] a bicycle."),
         ]
-        Mdfier(tmp.name).write(contents)
+        tmp_output_path = Path(tmp_dir, "output.md")
+        Mdfier(tmp_output_path).write(contents)
 
-        tmp.seek(0)
-        lines = tmp.readlines()
+        with tmp_output_path.open() as f:
+            lines = f.readlines()
 
-        assert lines[0] == "# Hello, MDFY!\n"
-        assert lines[1] == "**Life** is *like* a bicycle.\n"
+            assert lines[0] == "# Hello, MDFY!\n"
+            assert lines[1] == "**Life** is *like* a bicycle.\n"
 
 
 def test_mdfy_write_with_statement():
-    with tempfile.NamedTemporaryFile("w+", delete=True) as tmp:
+    with tempfile.TemporaryDirectory() as tmp_dir:
         contents = [
             MdHeader("Hello, MDFY!"),
             MdText("[Life:bold] is [like:italic] a bicycle."),
         ]
-        mdier = Mdfier(tmp.name)
+        tmp_output_path = Path(tmp_dir, "output.md")
+        mdier = Mdfier(tmp_output_path)
         with mdier as mdfier:
             for content in contents:
                 mdfier.write(content)
 
-        tmp.seek(0)
-        lines = tmp.readlines()
+        with tmp_output_path.open() as f:
+            lines = f.readlines()
 
-        assert lines[0] == "# Hello, MDFY!\n"
-        assert lines[1] == "**Life** is *like* a bicycle.\n"
-        assert mdier.file_object.closed
+            assert lines[0] == "# Hello, MDFY!\n"
+            assert lines[1] == "**Life** is *like* a bicycle.\n"
+            assert mdier.file_object.closed
