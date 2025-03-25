@@ -4,7 +4,7 @@ from pathlib import Path
 from mdfy import Mdfier, MdHeader, MdText
 
 
-def test_mdfy_write():
+def test_mdfy_write() -> None:
     with tempfile.TemporaryDirectory() as tmp_dir:
         contents = [
             MdHeader("Hello, MDFY!"),
@@ -20,15 +20,15 @@ def test_mdfy_write():
             assert lines[1] == "**Life** is *like* a bicycle.\n"
 
 
-def test_mdfy_write_with_statement():
+def test_mdfy_write_with_statement() -> None:
     with tempfile.TemporaryDirectory() as tmp_dir:
         contents = [
             MdHeader("Hello, MDFY!"),
             MdText("[Life:bold] is [like:italic] a bicycle."),
         ]
         tmp_output_path = Path(tmp_dir, "output.md")
-        mdier = Mdfier(tmp_output_path)
-        with mdier as mdfier:
+        mdfier = Mdfier(tmp_output_path)
+        with mdfier as mdfier:
             for content in contents:
                 mdfier.write(content)
 
@@ -37,10 +37,10 @@ def test_mdfy_write_with_statement():
 
             assert lines[0] == "# Hello, MDFY!\n"
             assert lines[1] == "**Life** is *like* a bicycle.\n"
-            assert mdier.file_object.closed
+            assert mdfier.file_object and mdfier.file_object.closed
 
 
-def test_mdfy_write_in_utf8():
+def test_mdfy_write_in_utf8() -> None:
     with tempfile.TemporaryDirectory() as tmp_dir:
         contents = [
             MdHeader("こんにちは")
