@@ -1,7 +1,7 @@
 import tempfile
 from pathlib import Path
 
-from mdfy import Mdfier, MdHeader, MdText
+from mdfy import Mdfier, MdHeader, MdText, MdLink, MdElement
 
 
 def test_mdfy_write() -> None:
@@ -13,7 +13,7 @@ def test_mdfy_write() -> None:
         tmp_output_path = Path(tmp_dir, "output.md")
         Mdfier(tmp_output_path).write(contents)
 
-        with tmp_output_path.open() as f:
+        with tmp_output_path.open(encoding="utf-8") as f:
             lines = f.readlines()
 
             assert lines[0] == "# Hello, MDFY!\n"
@@ -32,7 +32,7 @@ def test_mdfy_write_with_statement() -> None:
             for content in contents:
                 mdfier.write(content)
 
-        with tmp_output_path.open() as f:
+        with tmp_output_path.open(encoding="utf-8") as f:
             lines = f.readlines()
 
             assert lines[0] == "# Hello, MDFY!\n"
@@ -55,4 +55,28 @@ def test_mdfy_write_in_utf8() -> None:
             lines = f.readlines()
 
             assert lines[0] == "# こんにちは\n"
-            assert mdier.file_object.closed
+            assert mdfier.file_object and mdfier.file_object.closed
+
+
+def test_mdfy_nested_contents() -> None:
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        contents: list[MdElement | list[MdElement]]  = [
+            MdHeader("Hello, MDFY!"),
+            [
+                MdText("This is a nested content."),
+                MdText("This is another nested content."),
+                (
+                    MdLink("url", "Click me!")
+                )
+            ],
+        ]
+        tmp_output_path = Path(tmp_dir, "output.md")
+        Mdfier(tmp_output_path).write(contents)
+
+        with tmp_output_path.open(encoding="utf-8") as f:
+            lines = f.readlines()
+
+            assert lines[0] == "# Hello, MDFY!\n"
+            assert lines[1] == "This is a nested content.\n"
+            assert lines[2] == "This is another nested content.\n"
+            assert lines[3] == "[Click me!](url)\n"
