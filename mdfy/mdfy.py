@@ -7,9 +7,9 @@ from collections.abc import Iterable
 from .elements import MdElement
 
 
-ContentElementType = str | MdElement
-_ContentType = ContentElementType | Iterable[ContentElementType]
-ContentType = _ContentType | Iterable[_ContentType]
+ContentElementType = Union[str, MdElement]
+_ContentType = Union[ContentElementType, Iterable[ContentElementType]]
+ContentType = Union[_ContentType, Iterable[_ContentType]]
 
 
 def _flattern(content: ContentType) -> List[ContentElementType]:
