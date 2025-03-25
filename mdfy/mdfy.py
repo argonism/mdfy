@@ -6,12 +6,6 @@ from typing import List, Optional, Type, Union
 from .elements import MdElement
 
 
-def write(content: str, filepath: str) -> None:
-    with open(filepath, "w") as file:
-        for item in content:
-            file.write(str(item) + "\n")
-
-
 class Mdfier:
     """Writes Markdown content to a file.
 
@@ -81,6 +75,8 @@ class Mdfier:
         Args:
             content (Union[str, MdElement]): The Markdown content to convert to a string.
         """
+
+
 
         return "\n".join([str(item) for item in contents])
 
