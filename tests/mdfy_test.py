@@ -42,9 +42,7 @@ def test_mdfy_write_with_statement() -> None:
 
 def test_mdfy_write_in_utf8() -> None:
     with tempfile.TemporaryDirectory() as tmp_dir:
-        contents = [
-            MdHeader("こんにちは")
-        ]
+        contents = [MdHeader("こんにちは")]
         tmp_output_path = Path(tmp_dir, "output.md")
         mdier = Mdfier(tmp_output_path)
         with mdier as mdfier:
@@ -60,14 +58,12 @@ def test_mdfy_write_in_utf8() -> None:
 
 def test_mdfy_nested_contents() -> None:
     with tempfile.TemporaryDirectory() as tmp_dir:
-        contents: list[MdElement | list[MdElement]]  = [
+        contents: list[MdElement | list[MdElement]] = [
             MdHeader("Hello, MDFY!"),
             [
                 MdText("This is a nested content."),
                 MdText("This is another nested content."),
-                (
-                    MdLink("url", "Click me!")
-                )
+                (MdLink("url", "Click me!")),
             ],
         ]
         tmp_output_path = Path(tmp_dir, "output.md")
