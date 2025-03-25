@@ -1,8 +1,7 @@
 from io import TextIOWrapper
 from pathlib import Path
 from types import TracebackType
-from typing import List, Optional, Type, Union
-from collections.abc import Iterable
+from typing import List, Optional, Type, Union, Iterable
 
 from .elements import MdElement
 
