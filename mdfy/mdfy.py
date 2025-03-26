@@ -40,9 +40,8 @@ class Mdfier:
         filepath (Path): The path to the file.
 
     Examples:
-        >>> from mdfy import Mdfier
-        >>> from mdfy.elements import MdHeader, MdQuote
-        >>>
+        >>> from mdfy import Mdfier, MdHeader, MdQuote, MdText
+        >>> # Writing Markdown content to a file
         >>> mdfier = Mdfier("README.md")
         >>> mdfier.write([
         ...     MdHeader("Hello, world!", 1),
@@ -54,6 +53,21 @@ class Mdfier:
         ...
         # Hello, world!
         > This is a quote.
+
+        from mdfy import MdHeader, MdQuote, MdText
+        >>> mdfier = Mdfier("README.md")
+        >>> # Nested content will be flattened
+        >>> mdfier.write([
+        ...     MdHeader("Hello, world!", 1),
+        ...     [
+        ...         MdText(f"{i} * {i} = {i * i}")
+        ...         for i in range(1, 3)
+        ...     ]
+        ... ])
+        # Hello, world!
+        0 * 0 = 0
+        1 * 1 = 1
+        2 * 2 = 4
     """
 
     def __init__(self, filepath: Union[str, Path], encoding: str = "utf-8") -> None:
