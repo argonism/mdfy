@@ -2,6 +2,14 @@ name: Run Pytest
 
 on:
   pull_request:
+    paths:
+      - 'mdfy'
+      - 'tests'
+      - '**/*.py'
+      - 'tox.ini'
+      - 'pyproject.toml'
+      - 'poetry.lock'
+      - '.github/workflows/test_for_pr.yml'
     branches:
       - main
   push:
@@ -27,7 +35,7 @@ jobs:
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python - --version 1.6.0
-            
+
       - name: Install dependencies
         run: |
           poetry install
