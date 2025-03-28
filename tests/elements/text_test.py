@@ -3,14 +3,14 @@ import pytest
 from mdfy import MdText
 
 
-def test_text_concatenation():
+def test_text_concatenation() -> None:
     text1 = MdText("[Hello:bold]")
     text2 = MdText("[World:italic]")
     combined = text1 + text2
     assert str(combined) == "**Hello***World*"
 
 
-def test_nested_style():
+def test_nested_style() -> None:
     text = MdText("[italic in bold is = [strong:italic]:bold]")
     assert str(text) == "**italic in bold is = *strong***"
 
@@ -52,6 +52,6 @@ def test_nested_style():
         ),
     ],
 )
-def test_various_texts(input_text, expected_output):
+def test_various_texts(input_text: str, expected_output: str) -> None:
     text = MdText(input_text)
     assert str(text) == expected_output

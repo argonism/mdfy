@@ -4,7 +4,7 @@ from mdfy import MdTable
 
 
 # Test initialization with dictionary
-def test_initialization_with_dict():
+def test_initialization_with_dict() -> None:
     data = {"name": "John", "age": 30}
     table = MdTable(data)
     assert isinstance(table, MdTable)
@@ -14,7 +14,7 @@ def test_initialization_with_dict():
 
 
 # Test initialization with list of dictionaries
-def test_initialization_with_list():
+def test_initialization_with_list() -> None:
     data = [{"name": "John", "age": 30}, {"name": "Doe", "age": 25}]
     table = MdTable(data)
     assert isinstance(table, MdTable)
@@ -26,7 +26,7 @@ def test_initialization_with_list():
 
 
 # Test the creation of a regular markdown table from dictionary data
-def test_dict_to_md_table():
+def test_dict_to_md_table() -> None:
     data = [{"name": "John", "age": 30}]
     table = MdTable(data)
     md_output = table.dict_to_md_table()
@@ -41,7 +41,7 @@ def test_dict_to_md_table():
 
 
 # Test the creation of a transposed markdown table from dictionary data
-def test_transposed_table():
+def test_transposed_table() -> None:
     data = [{"name": "John", "age": 30}]
     table = MdTable(data)
     md_output = table.dict_to_md_table(transpose=True)
@@ -57,7 +57,7 @@ def test_transposed_table():
 
 
 # Test the floating point number precision
-def test_precision():
+def test_precision() -> None:
     data = [{"value": 3.14159265359}]
     table = MdTable(data)
     md_output = table.dict_to_md_table(precision=2)
@@ -72,7 +72,7 @@ def test_precision():
 
 
 # Test nested dictionary flattening
-def test_flatten_dict():
+def test_flatten_dict() -> None:
     data = {"user": {"name": "John", "details": {"age": 30, "location": "Tokyo"}}}
     table = MdTable(data)
     md_output = table.dict_to_md_table()
@@ -85,7 +85,7 @@ def test_flatten_dict():
 
 
 # Test MdText integration (Note: This assumes that MdText correctly processes the styled text)
-def test_mdtext_integration():
+def test_mdtext_integration() -> None:
     from mdfy import MdText
 
     data = {"text": MdText("[bold:bold]")}
@@ -102,6 +102,6 @@ def test_mdtext_integration():
 
 
 # Test the exception for invalid input
-def test_invalid_input():
+def test_invalid_input() -> None:
     with pytest.raises(ValueError):
-        MdTable("invalid input")
+        MdTable("invalid input")  # type: ignore

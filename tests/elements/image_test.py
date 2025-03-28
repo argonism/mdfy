@@ -7,20 +7,20 @@ from mdfy import MdImage
 
 
 @pytest.fixture
-def basic_image():
+def basic_image() -> MdImage:
     return MdImage(src="https://example.com/image.png", alt="Example Image")
 
 
-def test_basic_image_to_string(basic_image):
+def test_basic_image_to_string(basic_image: MdImage) -> None:
     assert str(basic_image) == "![Example Image](https://example.com/image.png)"
 
 
-def test_image_without_alt():
+def test_image_without_alt() -> None:
     image = MdImage(src="https://example.com/another.png")
     assert str(image) == "![](https://example.com/another.png)"
 
 
-def test_image_with_special_characters():
+def test_image_with_special_characters() -> None:
     image = MdImage(
         src="https://example.com/image.png", alt="Image [with] (special) characters!"
     )
@@ -30,13 +30,13 @@ def test_image_with_special_characters():
     assert str(image) == expected_str
 
 
-def test_image_with_empty_src_and_alt():
+def test_image_with_empty_src_and_alt() -> None:
     image = MdImage(src="", alt="")
     assert str(image) == "![]()"
 
 
-def test_image_with_none_src(caplog: LogCaptureFixture):
-    image = MdImage(src=None, alt="No Source")
+def test_image_with_none_src(caplog: LogCaptureFixture) -> None:
+    image = MdImage(src=None, alt="No Source")  # type: ignore
 
     assert str(image) == "![No Source]()"
     assert (
