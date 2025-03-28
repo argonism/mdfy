@@ -47,7 +47,7 @@ TEST_CASES = [
 
 
 @pytest.mark.parametrize("test_data", TEST_CASES)
-def test_md_list(test_data):
+def test_md_list(test_data: dict) -> None:
     items = test_data["items"]
     numbered = test_data["numbered"]
     indent = test_data.get("indent", 4)

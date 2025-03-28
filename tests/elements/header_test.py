@@ -1,3 +1,5 @@
+from typing import Union
+
 import pytest
 
 from mdfy import MdHeader
@@ -12,7 +14,9 @@ from mdfy import MdHeader
         ("No Level Specified", None, "# No Level Specified"),
     ],
 )
-def test_mdheader_formatting(input_text, level, expected_output):
+def test_mdheader_formatting(
+    input_text: str, level: Union[int, None], expected_output: str
+) -> None:
     if level:
         header = MdHeader(input_text, level)
     else:

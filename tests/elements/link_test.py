@@ -17,7 +17,7 @@ from mdfy import MdLink
         (None, "", None, "[]()"),
     ],
 )
-def test_mdlink_parametrized(url, text, title, expected):
+def test_mdlink_parametrized(url: str, text: str, title: str, expected: str) -> None:
     link = MdLink(url, text=text, title=title)
     if url is None:
         with pytest.warns(
