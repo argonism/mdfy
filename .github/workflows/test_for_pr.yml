@@ -40,5 +40,9 @@ jobs:
         run: |
           poetry install
 
+      - name: Run mypy
+        run: |
+          poetry run mypy .
+
       - name: Test with tox
         run: poetry run tox

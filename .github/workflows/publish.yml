@@ -9,7 +9,7 @@ on:
         default: "x.y.z"
       release_note:
         description: "release note"
-        required: false
+        required: true
 
 jobs:
   pypi-publish:
@@ -33,6 +33,14 @@ jobs:
 
       - name: Add path for Poetry
         run: echo "$HOME/.poetry/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: |
+          poetry install
+
+      - name: Run mypy
+        run: |
+          poetry run mypy .
 
       - name: Add Poetry Plugin
         run: |
