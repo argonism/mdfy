@@ -26,7 +26,7 @@ def _flattern(content: ContentType) -> List[ContentElementType]:
 
     result: list[ContentElementType] = []
     for item in content:
-        if isinstance(item, MdElement):
+        if isinstance(item, MdElement) or isinstance(item, str):
             result.append(item)
         else:
             result.extend(_flattern(item))
