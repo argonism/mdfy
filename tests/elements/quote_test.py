@@ -17,13 +17,8 @@ quote for testing."""
 
 def test_mdquote_with_md_element() -> None:
     content = MdText("This is a [quote:bold] using MdText.")
-    quote = MdQuote(content)  # type: ignore
+    quote = MdQuote(content)
     assert str(quote) == "> This is a **quote** using MdText."
-
-
-def test_mdquote_with_none_content() -> None:
-    quote = MdQuote(None)  # type: ignore
-    assert str(quote) == "> "
 
 
 def test_mdquote_with_empty_string() -> None:

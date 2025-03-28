@@ -1,3 +1,5 @@
+from typing import Union
+
 from ._base import MdElement
 
 
@@ -20,11 +22,11 @@ class MdQuote(MdElement):
         > This is another line.
     """
 
-    def __init__(self, content: str) -> None:
+    def __init__(self, content: Union[str, MdElement]) -> None:
         """Initializes an instance of the MdQuote class to represent a Markdown blockquote.
 
         Args:
-            content (str or MdElement): The content of the quote.
+            content (str | MdElement): The content of the quote.
         """
         self.content = content
 

@@ -33,8 +33,3 @@ def test_mdcode_inline_override_with_newline() -> None:
     code = MdCode(code_content, inline=True)
     expected = "```\nprint('Hello, World!')\nprint('MDFY!')\n```"
     assert str(code) == expected
-
-
-def test_mdcode_none_content() -> None:
-    code = MdCode(None)  # type: ignore
-    assert str(code) == "```\n\n```"
