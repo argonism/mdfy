@@ -55,3 +55,10 @@ def test_nested_style() -> None:
 def test_various_texts(input_text: str, expected_output: str) -> None:
     text = MdText(input_text)
     assert str(text) == expected_output
+
+
+def test_no_style() -> None:
+    text = MdText("No style text.", no_style=True)
+    assert str(text) == "No style text."
+    text = MdText("[No style text:italic]", no_style=True)
+    assert str(text) == "[No style text:italic]"
