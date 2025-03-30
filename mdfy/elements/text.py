@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Optional
 
 from mdfy.elements._base import MdElement
 from mdfy.elements.text_formatter import MdFormatter
@@ -52,7 +52,7 @@ class MdText(MdElement):
     def __init__(
         self,
         content: str,
-        formatter: Union[MdFormatter, None] = None,
+        formatter: Optional[MdFormatter] = None,
         no_style: bool = False,
     ) -> None:
         """Initializes an instance of the MdText class to handle the text and styling of text.
