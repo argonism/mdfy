@@ -45,26 +45,51 @@ pip install mdfy
 
 Here's a quick start guide to get you up and running!
 
-```python
+``` python
 from mdfy import Mdfier, MdText, MdHeader, MdTable
 
 contents = [
   MdHeader("Hello, MDFY!"),
   MdText("[Life:bold] is [like:italic] a bicycle."),
-  MdTable(["head1": "content", "head2": "content"])
+  MdTable({"head1": "content", "head2": "content"})
 ]
 Mdfier("markdown.md").write(contents)
-
-# or use a with statement to write iteratively
-
-with Mdfier("markdown.md") as md:
-  for content in contents:
-    md.write(MdText(text))
 
 # => markdown.md
 #
 # # Hello, MDFY!
 # **Life** is *like* a bicycle.
+```
+
+You can pass nested list to `Mdfier.write` and it will be flatterned:
+
+``` python
+from mdfy import Mdfier, MdText, MdHeader, MdTable
+
+group = ["Group A", "Group B"]
+group_agg_results = [
+  [2, 3, 0, 1],
+  [4, 2, 1, 0],
+]
+
+contents = [
+  MdHeader("Hello, MDFY!"),
+  [
+    (
+      MdHeader(group_name, level=2),
+      MdText(f"Sum: {sum(group_agg_result)} ({', '.join(map(str, group_agg_result))})")
+    )
+    for group_name, group_agg_result in zip(group, group_agg_results)
+  ]
+]
+Mdfier("markdown.md").write(contents)
+
+# => markdown.md
+# # Hello, MDFY!
+# ## Group A
+# Sum: 6 (2, 3, 0, 1)
+# ## Group B
+# Sum: 7 (4, 2, 1, 0)
 ```
 
 Each mdfy element is string-convertible and can operate independently!
@@ -74,7 +99,7 @@ from mdfy import MdText, MdHeader, MdTable
 
 print(MdHeader("Hello, MDFY!"))
 print(MdText("[Life:bold] is [like:italic] a bicycle."))
-print(MdTable(["head1": "content", "head2": "content"]))
+print(MdTable({"head1": "content", "head2": "content"}))
 
 # => result
 #
