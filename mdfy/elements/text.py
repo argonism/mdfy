@@ -6,9 +6,9 @@ from mdfy.elements.text_formatter import MdFormatter
 try:
     from mdfy.elements.formatter.lark_formatter import MdTextFormatter
 
-    formatter_available = True
+    _formatter_available = True
 except ImportError:
-    formatter_available = False
+    _formatter_available = False
 
 
 class MdText(MdElement):
@@ -69,7 +69,7 @@ class MdText(MdElement):
         self.formatter = formatter
         self.no_style = no_style
 
-        if self.formatter is None and formatter_available and not no_style:
+        if self.formatter is None and _formatter_available and not no_style:
             self.formatter = MdTextFormatter()
 
     def __str__(self) -> str:
