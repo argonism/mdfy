@@ -24,7 +24,7 @@ class MdList(MdElement):
         >>> list = MdList(["item 1", "item 2"], numbered=True)
         >>> print(list)
         1. item 1
-        2. item 2
+        1. item 2
         >>>
         >>> list = MdList([
         ...     "item 1",

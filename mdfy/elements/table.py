@@ -26,11 +26,11 @@ class MdTable(MdElement):
         | John Doe | 30 | Software Engineer |
         >>> table = MdTable(data, transpose=True)
         >>> print(table)
-        | Key | Value 0 | Value 1 | Value 2 |
-        | --- | --- | --- | --- |
-        | Name | John Doe |  |  |
-        | Age | 30 |  |  |
-        | Occupation | Software Engineer |  |  |
+        | Key | Value 0 |
+        | --- | --- |
+        | Name | John Doe |
+        | Age | 30 |
+        | Occupation | Software Engineer |
         >>> table = MdTable(data, transpose=True, labels=["Header", "Value"])
         >>> print(table)
         | Header | Value |

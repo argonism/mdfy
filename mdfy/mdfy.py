@@ -42,20 +42,20 @@ class Mdfier:
     Examples:
         >>> from mdfy import Mdfier, MdHeader, MdQuote, MdText
         >>> # Writing Markdown content to a file
-        >>> mdfier = Mdfier("README.md")
+        >>> mdfier = Mdfier("quote.md")
         >>> mdfier.write([
         ...     MdHeader("Hello, world!", 1),
         ...     MdQuote("This is a quote.")
         ... ])
         >>>
-        >>> with open("README.md") as file:
+        >>> with open("quote.md") as file:
         ...     print(file.read())
         ...
         # Hello, world!
         > This is a quote.
 
         from mdfy import MdHeader, MdQuote, MdText
-        >>> mdfier = Mdfier("README.md")
+        >>> mdfier = Mdfier("nest.md")
         >>> # Nested content will be flattened
         >>> mdfier.write([
         ...     MdHeader("Hello, world!", 1),
@@ -64,8 +64,10 @@ class Mdfier:
         ...         for i in range(1, 3)
         ...     ]
         ... ])
+        >>> with open("nest.md") as file:
+        ...     print(file.read())
+        ...
         # Hello, world!
-        0 * 0 = 0
         1 * 1 = 1
         2 * 2 = 4
     """
