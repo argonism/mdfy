@@ -10,7 +10,7 @@ classifiers = ["Typing :: Typed"]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<4.0"
-lark = "^1.1.7"
+lark = {version = "^1.2.2", extras = ["styled-text"]}
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.0.289"
