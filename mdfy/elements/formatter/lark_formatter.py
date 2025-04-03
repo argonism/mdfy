@@ -1,15 +1,20 @@
 from typing import Dict, Optional
 from collections.abc import Callable
+import logging
 
 from mdfy.elements.text_formatter import MdFormatter
 
 try:
+    import lark
     from lark import Lark, Token, Tree
     from lark.visitors import Interpreter
 except ImportError as e:
     raise ImportError(
         "Please install the lark package via `pip install mdfy[styled-text]`"
     ) from e
+
+
+logger = logging.getLogger(__name__)
 
 
 class MdTextInterpreter(Interpreter):
@@ -77,6 +82,9 @@ class MdTextInterpreter(Interpreter):
         if style.value in self.style_patterns:
             return self.style_patterns[style.value].format(target_text)
         else:
+            logger.warning(
+                "Style '%s' not found in patterns. Returning unformatted text.", style.value
+            )
             return target_text
 
     def non_styled_text(self, tree: Tree) -> str:
@@ -193,8 +201,13 @@ class MdTextFormatter(MdFormatter):
         Returns:
             str: The formatted text.
         """
-        parsed = self.parse(text)
-        result: str = self.interpreter.visit(parsed)
+        try:
+            parsed = self.parse(text)
+            result: str = self.interpreter.visit(parsed)
+        except lark.exceptions.UnexpectedInput as e:
+            logger.warning("Invalid Input: %s. Returning the original text.", e)
+            return text
+
         return result
 
     def parse(self, text: str) -> Tree:
