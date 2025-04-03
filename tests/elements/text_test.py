@@ -82,3 +82,17 @@ def test_text_no_lark(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_text_with_bracket_but_no_style(input_text: str, expected_output: str) -> None:
     text = MdText(input_text)
     assert str(text) == expected_output
+
+
+
+@pytest.mark.parametrize(
+    "input_text, expected_output",
+    [
+        ("[Hello:bold", "[Hello:bold"),
+        ("Hello]", "Hello]"),
+        ("[Hello:bold]]", "[Hello:bold]]"),
+    ],
+)
+def test_fallback_when_parse_error(input_text: str, expected_output: str) -> None:
+    text = MdText(input_text)
+    assert str(text) == expected_output
