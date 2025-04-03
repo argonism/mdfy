@@ -62,3 +62,9 @@ def test_no_style() -> None:
     assert str(text) == "No style text."
     text = MdText("[No style text:italic]", no_style=True)
     assert str(text) == "[No style text:italic]"
+
+
+def test_text_no_lark(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr("mdfy.elements.text._formatter_available", False)
+    text = MdText("[Hello:bold]")
+    assert str(text) == "[Hello:bold]"
