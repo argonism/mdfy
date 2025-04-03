@@ -39,7 +39,6 @@ class MdTextInterpreter(Interpreter):
         if len(children) == 0:
             return ""
 
-
         interpreted = ""
         for child in children:
             if isinstance(child, Token):
@@ -50,7 +49,9 @@ class MdTextInterpreter(Interpreter):
                 elif child.data == "non_styled_text":
                     interpreted += self.non_styled_text(child)
                 else:
-                    raise ValueError(f"Unable to handle this content type: {child.__class__}")
+                    raise ValueError(
+                        f"Unable to handle this content type: {child.__class__}"
+                    )
             else:
                 raise ValueError(f"Unable to handle this child type: {child.__class__}")
         return interpreted
