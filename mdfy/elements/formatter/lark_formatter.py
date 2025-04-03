@@ -1,4 +1,5 @@
 from typing import Dict, Optional
+from collections.abc import Callable
 
 from mdfy.elements.text_formatter import MdFormatter
 
@@ -31,12 +32,25 @@ class MdTextInterpreter(Interpreter):
         Returns:
             str: The processed text.
         """
+
+        children = tree.children
+        if len(children) == 1 and isinstance(children[0], Token):
+            return str(children[0].value)
+        if len(children) == 0:
+            return ""
+
+
         interpreted = ""
-        for child in tree.children:
+        for child in children:
             if isinstance(child, Token):
                 interpreted += child.value
             elif isinstance(child, Tree):
-                interpreted += self.styled_text(child)
+                if child.data == "styled_text":
+                    interpreted += self.styled_text(child)
+                elif child.data == "non_styled_text":
+                    interpreted += self.non_styled_text(child)
+                else:
+                    raise ValueError(f"Unable to handle this content type: {child.__class__}")
             else:
                 raise ValueError(f"Unable to handle this child type: {child.__class__}")
         return interpreted
@@ -64,14 +78,36 @@ class MdTextInterpreter(Interpreter):
         else:
             return target_text
 
+    def non_styled_text(self, tree: Tree) -> str:
+        """Processes a subtree for non-styled text.
+
+        Args:
+            tree (Tree): The subtree to process.
+
+        Returns:
+            str: The non-styled text.
+        """
+        lbrak, *content, rbrak = tree.children
+        if not isinstance(lbrak, Token) or not isinstance(rbrak, Token):
+            raise ValueError(
+                f"Expected lbrak and rbrak to be Tokens, got {lbrak.__class__} and {rbrak.__class__}"
+            )
+
+        target_texts: list[str] = []
+        for node in content:
+            target_texts.append(self.process_content_tree(node))
+
+        return str(lbrak.value) + "".join(target_texts) + str(rbrak.value)
+
     def start(self, tree: Tree) -> str:
         return "".join(self.visit_children(tree))
 
 
 grammar = r"""
-    start: TEXT? styled_text? (start)* TEXT?
+    start: TEXT? non_styled_text? styled_text? (start)* TEXT?
+    non_styled_text: LBRAK content+ RBRAK
     styled_text: LBRAK content+ COLON INTEXT RBRAK
-    content: INTEXT | INTEXT? styled_text
+    content: INTEXT | INTEXT? non_styled_text? styled_text?
     TEXT:   WS* /[^\[\]]+/ WS*
     INTEXT: WS* /[^\[\]:]+/ WS*
     LBRAK: "["
