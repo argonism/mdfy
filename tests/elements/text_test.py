@@ -68,3 +68,17 @@ def test_text_no_lark(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("mdfy.elements.text._formatter_available", False)
     text = MdText("[Hello:bold]")
     assert str(text) == "[Hello:bold]"
+
+
+@pytest.mark.parametrize(
+    "input_text, expected_output",
+    [
+        ("Plain text", "Plain text"),
+        ("[Hello] and World", "[Hello] and World"),
+        ("[[Hello:bold]] and World", "[**Hello**] and World"),
+        ("[[Hello]] and World", "[[Hello]] and World"),
+    ],
+)
+def test_text_with_bracket_but_no_style(input_text: str, expected_output: str) -> None:
+    text = MdText(input_text)
+    assert str(text) == expected_output
