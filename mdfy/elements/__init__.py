@@ -8,3 +8,4 @@ from .list import MdList
 from .quote import MdQuote
 from .table import MdTable
 from .text import MdText
+from .toc import MdTableOfContents
