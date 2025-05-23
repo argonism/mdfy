@@ -8,9 +8,11 @@ from .elements import (
     MdList,
     MdQuote,
     MdTable,
+    MdTableOfContents,
     MdText,
 )
-from .mdfy import Mdfier, ContentType, ContentElementType
+from .mdfy import Mdfier
+from .types import ContentType, ContentElementType
 
 __all__ = [
     "MdCode",
@@ -22,6 +24,7 @@ __all__ = [
     "MdList",
     "MdQuote",
     "MdTable",
+    "MdTableOfContents",
     "MdText",
     "Mdfier",
     "ContentType",

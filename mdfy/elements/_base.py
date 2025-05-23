@@ -1,3 +1,8 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
+
 class MdElement:
     """Represents a Markdown element.
 
@@ -16,3 +21,16 @@ class MdElement:
         """
 
         return str(self)
+
+
+class MdControlElement(MdElement):
+    """Represents a control element in Markdown.
+
+
+    This element is used to control the rendering of the markdown content.
+    It should not be stringified.
+    """
+
+    def __str__(self) -> str:
+        logger.warning("Control elements should not be stringified.")
+        return super().__str__()

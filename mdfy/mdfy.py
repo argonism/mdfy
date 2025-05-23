@@ -1,36 +1,11 @@
 from io import TextIOWrapper
 from pathlib import Path
 from types import TracebackType
-from typing import List, Optional, Type, Union, Iterable
+from typing import Optional, Type, Union, Iterable
 
-from .elements import MdElement
-
-
-ContentElementType = Union[str, MdElement]
-_ContentType = Union[ContentElementType, Iterable[ContentElementType]]
-ContentType = Union[_ContentType, Iterable[_ContentType]]
-
-
-def _flattern(content: ContentType) -> List[ContentElementType]:
-    """Flattens an iterable of elements.
-
-    Args:
-        content (Iterable): The iterable of elements to flatten.
-
-    Returns:
-        List: The flattened list of elements.
-    """
-
-    if not isinstance(content, Iterable):
-        return [content]
-
-    result: list[ContentElementType] = []
-    for item in content:
-        if isinstance(item, MdElement) or isinstance(item, str):
-            result.append(item)
-        else:
-            result.extend(_flattern(item))
-    return result
+from .elements import MdTableOfContents
+from .utils import flattern
+from .types import ContentType
 
 
 class Mdfier:
@@ -119,8 +94,17 @@ class Mdfier:
             content (Union[str, MdElement]): The Markdown content to convert to a string.
         """
 
-        flattened_contents = _flattern(contents)
-        return separator.join([str(item) for item in flattened_contents])
+        flattened_contents = flattern(contents)
+
+        markdown_parts = []
+        for element in flattened_contents:
+            match element:
+                case MdTableOfContents():
+                    markdown_parts.append(element.render(flattened_contents))
+                case _:
+                    markdown_parts.append(str(element))
+
+        return separator.join(markdown_parts)
 
     def write(self, contents: ContentType) -> None:
         """Writes the given Markdown content to the file.
