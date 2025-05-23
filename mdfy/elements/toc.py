@@ -39,7 +39,7 @@ class MdTableOfContents(MdControlElement):
         Returns:
             str: The generated table of contents.
         """
-        contents_to_render = contents if contents is not None else self._contents
+        contents_to_render = self._contents or contents
 
         if contents_to_render is None:
             raise ValueError(
@@ -51,9 +51,6 @@ class MdTableOfContents(MdControlElement):
             return ""
 
         headers = [elem for elem in contents_to_render if isinstance(elem, MdHeader)]
-
-        if len(headers) == 0:
-            return ""
 
         lines = []
         for header in headers:
