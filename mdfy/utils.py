@@ -5,6 +5,7 @@ from urllib.parse import quote
 
 from mdfy.types import ContentElementType, ContentType, MdElement
 
+
 def flattern(content: ContentType) -> List[ContentElementType]:
     """Flattens an iterable of elements.
 

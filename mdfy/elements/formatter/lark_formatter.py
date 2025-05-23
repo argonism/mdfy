@@ -83,7 +83,8 @@ class MdTextInterpreter(Interpreter):
             return self.style_patterns[style.value].format(target_text)
         else:
             logger.warning(
-                "Style '%s' not found in patterns. Returning unformatted text.", style.value
+                "Style '%s' not found in patterns. Returning unformatted text.",
+                style.value,
             )
             return target_text
 
