@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import List
 
+import pytest
+
 from mdfy import Mdfier, MdHeader, MdTableOfContents, MdText
 from mdfy.types import ContentElementType
 
@@ -20,23 +22,22 @@ def test_table_of_contents_basic(tmp_path: Path) -> None:
         MdHeader("Another Subsection", 2),
     ]
 
-    mdfier.write([
-        MdTableOfContents(contents=content),
-        *content
-    ])
+    mdfier.write([MdTableOfContents(contents=content), *content])
 
     # Read the generated content
     file_content = filepath.read_text()
 
     # Expected table of contents
-    expected_toc = "\n".join([
-        "- [First Section](#first-section)",
-        "  - [Subsection A](#subsection-a)",
-        "  - [Subsection B](#subsection-b)",
-        "- [Second Section](#second-section)",
-        "  - [Another Subsection](#another-subsection)",
-        "",
-    ])
+    expected_toc = "\n".join(
+        [
+            "- [First Section](#first-section)",
+            "  - [Subsection A](#subsection-a)",
+            "  - [Subsection B](#subsection-b)",
+            "- [Second Section](#second-section)",
+            "  - [Another Subsection](#another-subsection)",
+            "",
+        ]
+    )
 
     assert expected_toc in file_content
 
@@ -58,11 +59,13 @@ def test_table_of_contents_with_mdfier_contents(tmp_path: Path) -> None:
     result = filepath.read_text()
 
     # Expected table of contents
-    expected_toc = "\n".join([
-        "- [Section 1](#section-1)",
-        "- [Section 2](#section-2)",
-        "",
-    ])
+    expected_toc = "\n".join(
+        [
+            "- [Section 1](#section-1)",
+            "- [Section 2](#section-2)",
+            "",
+        ]
+    )
 
     assert expected_toc in result
 
@@ -70,8 +73,8 @@ def test_table_of_contents_with_mdfier_contents(tmp_path: Path) -> None:
 def test_table_of_contents_empty() -> None:
     """Test table of contents with empty content list"""
     toc = MdTableOfContents(contents=[])
-    result = toc.render()
-    assert result == ""
+    with pytest.raises(ValueError, match="No contents provided.*"):
+        toc.render()
 
 
 def test_table_of_contents_standalone() -> None:
@@ -87,14 +90,16 @@ def test_table_of_contents_standalone() -> None:
     toc = MdTableOfContents(contents=contents)
     result = toc.render()
 
-    expected = "\n".join([
-        "- [First Section](#first-section)",
-        "  - [Subsection A](#subsection-a)",
-        "  - [Subsection B](#subsection-b)",
-        "- [Second Section](#second-section)",
-        "  - [Another Subsection](#another-subsection)",
-        "",
-    ])
+    expected = "\n".join(
+        [
+            "- [First Section](#first-section)",
+            "  - [Subsection A](#subsection-a)",
+            "  - [Subsection B](#subsection-b)",
+            "- [Second Section](#second-section)",
+            "  - [Another Subsection](#another-subsection)",
+            "",
+        ]
+    )
 
     assert result == expected
 

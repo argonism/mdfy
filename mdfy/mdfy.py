@@ -98,11 +98,10 @@ class Mdfier:
 
         markdown_parts = []
         for element in flattened_contents:
-            match element:
-                case MdTableOfContents():
-                    markdown_parts.append(element.render(flattened_contents))
-                case _:
-                    markdown_parts.append(str(element))
+            if isinstance(element, MdTableOfContents):
+                markdown_parts.append(element.render(flattened_contents))
+            else:
+                markdown_parts.append(str(element))
 
         return separator.join(markdown_parts)
 

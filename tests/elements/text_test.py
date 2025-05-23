@@ -84,7 +84,6 @@ def test_text_with_bracket_but_no_style(input_text: str, expected_output: str) -
     assert str(text) == expected_output
 
 
-
 @pytest.mark.parametrize(
     "input_text, expected_output",
     [
