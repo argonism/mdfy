@@ -8,7 +8,8 @@ def test_initialization_with_dict() -> None:
     data = {"name": "John", "age": 30}
     table = MdTable(data)
     assert isinstance(table, MdTable)
-    md_output = table.dict_to_md_table()
+    md_output = str(table)
+    # expected_output = "| name | age |\n" "| --- | --- |\n" "| John | 30 |"
     expected_output = "| name | age |\n" "| --- | --- |\n" "| John | 30 |"
     assert md_output == expected_output
 
@@ -18,7 +19,7 @@ def test_initialization_with_list() -> None:
     data = [{"name": "John", "age": 30}, {"name": "Doe", "age": 25}]
     table = MdTable(data)
     assert isinstance(table, MdTable)
-    md_output = table.dict_to_md_table()
+    md_output = str(table)
     expected_output = (
         "| name | age |\n" "| --- | --- |\n" "| John | 30 |\n" "| Doe | 25 |"
     )
@@ -26,10 +27,10 @@ def test_initialization_with_list() -> None:
 
 
 # Test the creation of a regular markdown table from dictionary data
-def test_dict_to_md_table() -> None:
+def test__to_md_table() -> None:
     data = [{"name": "John", "age": 30}]
     table = MdTable(data)
-    md_output = table.dict_to_md_table()
+    md_output = str(table)
     # fmt: off
     expected_output = (
         "| name | age |\n"
@@ -43,11 +44,11 @@ def test_dict_to_md_table() -> None:
 # Test the creation of a transposed markdown table from dictionary data
 def test_transposed_table() -> None:
     data = [{"name": "John", "age": 30}]
-    table = MdTable(data)
-    md_output = table.dict_to_md_table(transpose=True)
+    table = MdTable(data, transpose=True)
+    md_output = str(table)
     # fmt: off
     expected_output = (
-        "| Key | Value 0 |\n"
+        "| | |\n"
         "| --- | --- |\n"
         "| name | John |\n"
         "| age | 30 |"
@@ -56,11 +57,42 @@ def test_transposed_table() -> None:
     assert md_output == expected_output
 
 
+# Test custom headers
+def test_custom_headers() -> None:
+    data = [{"name": "John", "age": 30}]
+    table = MdTable(data, header=["Full Name", "Years"])
+    md_output = str(table)
+    # fmt: off
+    expected_output = (
+        "| Full Name | Years |\n"
+        "| --- | --- |\n"
+        "| John | 30 |"
+    )
+    # fmt: on
+    assert md_output == expected_output
+
+
+# Test row labels
+def test_row_labels() -> None:
+    data = [{"name": "John", "age": 30}, {"name": "Jane", "age": 25}]
+    table = MdTable(data, row_labels=["Person 1", "Person 2"])
+    md_output = str(table)
+    # fmt: off
+    expected_output = (
+        "| | name | age |\n"
+        "| --- | --- | --- |\n"
+        "| Person 1 | John | 30 |\n"
+        "| Person 2 | Jane | 25 |"
+    )
+    # fmt: on
+    assert md_output == expected_output
+
+
 # Test the floating point number precision
 def test_precision() -> None:
     data = [{"value": 3.14159265359}]
-    table = MdTable(data)
-    md_output = table.dict_to_md_table(precision=2)
+    table = MdTable(data, precision=2)
+    md_output = str(table)
     # fmt: off
     expected_output = (
         "| value |\n"
@@ -75,7 +107,7 @@ def test_precision() -> None:
 def test_flatten_dict() -> None:
     data = {"user": {"name": "John", "details": {"age": 30, "location": "Tokyo"}}}
     table = MdTable(data)
-    md_output = table.dict_to_md_table()
+    md_output = str(table)
     expected_output = (
         "| user.name | user.details.age | user.details.location |\n"
         "| --- | --- | --- |\n"
@@ -84,13 +116,13 @@ def test_flatten_dict() -> None:
     assert md_output == expected_output
 
 
-# Test MdText integration (Note: This assumes that MdText correctly processes the styled text)
+# Test MdText integration
 def test_mdtext_integration() -> None:
     from mdfy import MdText
 
     data = {"text": MdText("[bold:bold]")}
     table = MdTable(data)
-    md_output = table.dict_to_md_table()
+    md_output = str(table)
     # fmt: off
     expected_output = (
         "| text |\n"

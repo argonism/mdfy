@@ -1,7 +1,79 @@
-import warnings
-from typing import Any, Dict, List, Optional, Union
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional, Union, Iterable
+from collections.abc import Collection
 
 from ._base import MdElement
+
+
+@dataclass
+class TableData:
+    """Data model for markdown table content.
+
+    Attributes:
+        header (List[str]): Column headers of the table
+        row_labels (List[str]): Row labels (used when table is transposed)
+        values (List[List[Any]]): 2D array of table values
+    """
+
+    header: List[str]
+    row_labels: List[str]
+    values: Iterable[Collection[Any]]
+
+    @classmethod
+    def from_dict_list(
+        cls,
+        data: List[dict[str, Any]],
+        header: Optional[List[str]] = None,
+        row_labels: Optional[List[str]] = None,
+    ) -> "TableData":
+        """Create TableData from a list of dictionaries.
+
+        Args:
+            data (List[dict[str, Any]]): List of dictionaries to convert to table data
+            header (Optional[List[str]], optional): Custom header labels. Defaults to None.
+            row_labels (Optional[List[str]], optional): Custom row labels. Defaults to None.
+
+        Returns:
+            TableData: Converted table data
+        """
+        if not data:
+            return cls(header=[], row_labels=[], values=[])
+
+        # Get header from data if not provided
+        if header is None:
+            header = list(data[0].keys())
+
+        # Extract values using the header order
+        values = []
+        for row in data:
+            row_values = []
+            for key in data[0].keys():  # Use original keys to maintain order
+                value = row.get(key, "")
+                row_values.append(value)
+            values.append(row_values)
+
+        # Use provided row_labels or empty list
+        row_labels = row_labels or []
+
+        return cls(header=header, row_labels=row_labels, values=values)
+
+    def transpose(self) -> "TableData":
+        """Create a transposed version of the table data.
+
+        Returns:
+            TableData: Transposed table data
+        """
+        if not self.values:
+            return TableData(header=[], row_labels=[], values=[])
+
+        # Get original keys and values
+        transposed_values = list(zip(*self.values)) # We only have one row in this case
+
+        return TableData(
+            header=self.row_labels or [""] * len(transposed_values[0]),  # First key-value pair becomes header
+            row_labels=self.header,
+            values=transposed_values,
+        )
 
 
 class MdTable(MdElement):
@@ -9,8 +81,9 @@ class MdTable(MdElement):
 
     Args:
         data (dict or list): The data to convert.
+        header (List[str], optional): Custom header labels. If not provided, dictionary keys will be used.
+        row_labels (List[str], optional): Custom row labels. If not provided, no row labels will be shown.
         transpose (bool, optional): If True, transpose the table. Defaults to False.
-        labels (list[str], optional): Label for header when transposed. Defaults to 'Key' and 'value {i}'.
         precision (Optional[int]): Number of decimal places for floats. If None, values are not formatted.
 
     Examples:
@@ -24,111 +97,72 @@ class MdTable(MdElement):
         | Name | Age | Occupation |
         | --- | --- | --- |
         | John Doe | 30 | Software Engineer |
-        >>> table = MdTable(data, transpose=True)
+        >>> # Custom headers
+        >>> table = MdTable(data, header=["Full Name", "Years", "Job"])
         >>> print(table)
-        | Key | Value 0 |
-        | --- | --- |
-        | Name | John Doe |
-        | Age | 30 |
-        | Occupation | Software Engineer |
-        >>> table = MdTable(data, transpose=True, labels=["Header", "Value"])
-        >>> print(table)
-        | Header | Value |
-        | --- | --- |
-        | Name | John Doe |
-        | Age | 30 |
-        | Occupation | Software Engineer |
-        >>> # you can use nested dict
-        >>> data = {
-        ...     "Name": "John Doe",
-        ...     "Age": 30,
-        ...     "Occupation": "Software Engineer",
-        ...     "Address": {
-        ...         "Street": "123 Main St",
-        ...         "City": "Anytown",
-        ...         "State": "CA",
-        ...         "Zip": 12345,
-        ...     },
-        ... }
-        >>> table = MdTable(data)
-        >>> print(table)
-        | Name | Age | Occupation | Address.Street | Address.City | Address.State | Address.Zip |
-        | --- | --- | --- | --- | --- | --- | --- |
-        | John Doe | 30 | Software Engineer | 123 Main St | Anytown | CA | 12345 |
-        >>> # you can also use a list of dicts
-        >>> data = [
-        ...     {
-        ...         "Name": "John Doe",
-        ...         "Age": 30,
-        ...         "Occupation": "Software Engineer",
-        ...     },
-        ...     {
-        ...         "Name": "Jane Doe",
-        ...         "Age": 25,
-        ...         "Occupation": "Data Scientist",
-        ...     },
-        ... ]
-        >>> table = MdTable(data)
-        >>> print(table)
-        | Name | Age | Occupation |
+        | Full Name | Years | Job |
         | --- | --- | --- |
         | John Doe | 30 | Software Engineer |
-        | Jane Doe | 25 | Data Scientist |
-        >>> # you can specify the precision for floats
-        >>> data = {
-        ...     "Name": "John Doe",
-        ...     "Age": 30,
-        ...     "Occupation": "Software Engineer",
-        ...     "Height": 1.83,
-        ...     "Weight": 80.5,
-        ... }
-        >>> table = MdTable(data, precision=2)
+        >>> # With row labels
+        >>> data = [
+        ...     {"Name": "John Doe", "Age": 30},
+        ...     {"Name": "Jane Doe", "Age": 25}
+        ... ]
+        >>> table = MdTable(data, row_labels=["Person 1", "Person 2"])
         >>> print(table)
-        | Name | Age | Occupation | Height | Weight |
-        | --- | --- | --- | --- | --- |
-        | John Doe | 30 | Software Engineer | 1.83 | 80.50 |
+        | | Name | Age |
+        | --- | --- | --- |
+        | Person 1 | John Doe | 30 |
+        | Person 2 | Jane Doe | 25 |
+        >>> # Transposed table
+        >>> print(MdTable(data, transpose=True))
+        | Name | John Doe | Jane Doe |
+        | --- | --- | --- |
+        | Age | 30 | 25 |
     """
 
     def __init__(
         self,
         data: Union[Dict[str, Any], List[Dict[str, Any]]],
+        header: Optional[List[str]] = None,
+        row_labels: Optional[List[str]] = None,
         transpose: bool = False,
-        labels: Optional[List[str]] = None,
         precision: Union[None, int] = None,
     ):
         """Initialize a MdTable instance.
 
         Args:
             data (Union[Dict[str, Any], List[Dict[str, Any]]]): The data to convert.
+            header (List[str], optional): Custom header labels. If not provided, dictionary keys will be used.
+            row_labels (List[str], optional): Custom row labels. If not provided, no row labels will be shown.
             transpose (bool, optional): If True, transpose the table. Defaults to False.
-            labels (list[str], optional): Label for header when transposed. Defaults to 'Key' and 'value {i}'.
             precision (Optional[int]): Number of decimal places for floats. If None, values are not formatted.
         """
-
-        if isinstance(data, list):
-            pass
-        elif isinstance(data, dict):
+        if isinstance(data, dict):
             data = [data]
-        else:
+        elif not isinstance(data, list):
             raise ValueError(
                 "Provided data is not a dictionary or list of dictionaries"
             )
-        self.data = self._flatten_data(data)
 
+        self.data = self._flatten_data(data)
+        self.header = header
+        self.row_labels = row_labels
         self.transpose = transpose
         self.precision = precision
-        self.labels = labels
 
     def _flatten_data(self, data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Flatten nested dictionaries in the data.
 
         Args:
             data (List[Dict[str, Any]]): The data to flatten.
+
+        Returns:
+            List[Dict[str, Any]]: Flattened data
         """
         flattened_data = []
         for entry in data:
             flattened_data.append(self._flatten_dict(entry))
-
         return flattened_data
 
     def _flatten_dict(
@@ -153,124 +187,6 @@ class MdTable(MdElement):
                 items[new_key] = v
         return items
 
-    def dict_to_md_table(
-        self,
-        transpose: bool = False,
-        labels: Optional[List[str]] = None,
-        output_file: Union[None, str] = None,
-        precision: Union[None, int] = None,
-    ) -> str:
-        """Convert the data to a Markdown formatted table.
-
-        Args:
-            transpose (bool, optional): If True, transpose the table. Defaults to False.
-            labels (list[str], optional): Label for header when transposed. Defaults to 'Key' and 'value {i}'.
-            output_file (Union[None, str], optional): The filename to write the table to.
-            precision (Union[None, int], optional): The precision for floating point numbers.
-
-        Returns:
-            str: Markdown formatted table.
-        """
-
-        self.precision = precision
-
-        md_table = ""
-        if not self.data:
-            return md_table
-
-        if transpose:
-            md_table = self._create_transposed_table(labels=self.labels)
-        else:
-            md_table = self._create_regular_table()
-
-        if output_file:
-            with open(output_file, "w") as f:
-                f.write(md_table)
-
-        return md_table
-
-    def _create_transposed_table(self, labels: Optional[List[str]]) -> str:
-        """Create a transposed version of the table.
-
-        Args:
-            key_label (str): Label for keys.
-            value_label (str): Label for values.
-
-        Returns:
-            str: Markdown formatted transposed table.
-        """
-        transposed_data = self._transpose_data()
-        if labels is None:
-            labels = ["Key"] + [f"Value {i}" for i in range(len(self.data))]
-        headers = self._create_transposed_headers(labels)
-        table_rows = self._create_table_rows(transposed_data)
-
-        return headers + "\n" + table_rows
-
-    def _transpose_data(self) -> Dict[str, List[Any]]:
-        """Transpose the data for creating a transposed table.
-
-        Returns:
-            dict: Transposed data as a dictionary.
-        """
-        headers = self.data[0].keys()
-        transposed_data: Dict[str, list] = {header: [] for header in headers}
-        for row in self.data:
-            for key, value in row.items():
-                transposed_data[key].append(value)
-
-        return transposed_data
-
-    def _create_transposed_headers(self, labels: List[str]) -> str:
-        """Create headers for the transposed table.
-
-        Args:
-            key_label (str): Label for key.
-            value_label (str): Label for values.
-
-        Returns:
-            str: Transposed table headers.
-        """
-        num_columns = len(self.data) + 1
-        if len(labels) < len(self.data) + 1:
-            warnings.warn(
-                (
-                    f"Number of labels ({len(labels)}) does not match "
-                    f"number of columns ({num_columns}). "
-                    "filling missing labels with empty strings."
-                )
-            )
-            labels += [""] * (num_columns - len(labels))
-        headers = ["---" for _ in range(num_columns)]
-        return (
-            f"| {labels[0]} | "
-            + " | ".join([labels[i] for i in range(1, num_columns)])
-            + " |\n"
-            + "| "
-            + " | ".join(headers)
-            + " |"
-        )
-
-    def _create_regular_table(self) -> str:
-        """Create a regular (non-transposed) version of the table.
-
-        Returns:
-            str: Markdown formatted table.
-        """
-        headers = "| " + self._create_regular_headers() + " |"
-        divider = "|" + "|".join([" --- " for _ in self.data[0].keys()]) + "|"
-        table_rows = self._create_regular_table_rows()
-
-        return headers + "\n" + divider + "\n" + table_rows
-
-    def _create_regular_headers(self) -> str:
-        """Create headers for the regular table.
-
-        Returns:
-            str: Table headers.
-        """
-        return " | ".join(self.data[0].keys())
-
     def _value_to_string(self, value: Any) -> str:
         """Convert the given value to a string. If it's a floating point number,
         it will be formatted according to the precision attribute.
@@ -285,40 +201,89 @@ class MdTable(MdElement):
             return f"{value:.{self.precision}f}"
         return str(value)
 
-    def _create_regular_table_rows(self) -> str:
-        """Create table rows for the non-transposed table.
-
-        Returns:
-            str: Formatted table rows for the regular table.
-        """
-        rows = []
-        for row in self.data:
-            rows.append(
-                "| "
-                + " | ".join([self._value_to_string(value) for value in row.values()])
-                + " |"
-            )
-        return "\n".join(rows)
-
-    def _create_table_rows(self, data: Dict[str, List[Any]]) -> str:
-        """Create table rows for the given data.
+    def _build_markdown_table(self, table_data: TableData) -> str:
+        """Build markdown table from TableData.
 
         Args:
-            data (Dict[str, List[Any]]): Data to be used for row creation.
+            table_data (TableData): The table data to convert to markdown
 
         Returns:
-            str: Formatted table rows.
+            str: Markdown formatted table
         """
-        rows = []
-        for key, values in data.items():
-            rows.append(
-                "| "
-                + key
-                + " | "
-                + " | ".join([self._value_to_string(value) for value in values])
-                + " |"
-            )
-        return "\n".join(rows)
+        if not table_data.values:
+            return ""
+
+        has_row_labels = bool(table_data.row_labels)
+        num_columns = len(next(iter(table_data.values)))
+
+        # Build header row
+        header_parts = []
+        if has_row_labels:
+            # Empty cell for row label column
+            header_parts.append("")
+
+        if table_data.header:
+            header_parts.extend(table_data.header)
+
+        # Format header row with correct spacing
+        header_cells = []
+        for part in header_parts:
+            if part:
+                header_cells.append(f" {part} ")
+            else:
+                # Single space for empty cells
+                header_cells.append(" ")
+        header_row = "|" + "|".join(header_cells) + "|" if header_parts else None
+
+        # Build separator row
+        if has_row_labels:
+            num_columns += 1
+        separator_row = "|" + "|".join([" --- "] * num_columns) + "|"
+
+        # Build value rows
+        value_rows = []
+        for i, row in enumerate(table_data.values):
+            row_parts = []
+            if has_row_labels and i < len(table_data.row_labels):
+                row_parts.append(table_data.row_labels[i])
+            row_parts.extend(self._value_to_string(val) for val in row)
+            value_rows.append("| " + " | ".join(row_parts) + " |")
+
+        # Combine all parts
+        table_parts = []
+        if header_row:
+            table_parts.append(header_row)
+        table_parts.append(separator_row)
+        table_parts.extend(value_rows)
+
+        return "\n".join(table_parts)
+
+    def _to_md_table(self) -> str:
+        """Convert the data to a Markdown formatted table.
+
+        Args:
+            transpose (bool, optional): If True, transpose the table. Defaults to False.
+            precision (Union[None, int], optional): The precision for floating point numbers.
+
+        Returns:
+            str: Markdown formatted table.
+        """
+        if not self.data:
+            return ""
+
+        # Create table data
+        table_data = TableData.from_dict_list(
+            self.data, header=self.header, row_labels=self.row_labels
+        )
+
+        # Handle transposition
+        if self.transpose:
+            table_data = table_data.transpose()
+
+        # Build markdown table
+        md_table = self._build_markdown_table(table_data)
+
+        return md_table
 
     def __str__(self) -> str:
-        return self.dict_to_md_table(transpose=self.transpose, precision=self.precision)
+        return self._to_md_table()
