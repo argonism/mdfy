@@ -1,6 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Union, Iterable
-from collections.abc import Collection
+from typing import Any, Dict, List, Optional, Union, Iterable, Tuple
 
 from ._base import MdElement
 
@@ -17,12 +16,12 @@ class TableData:
 
     header: List[str]
     row_labels: List[str]
-    values: Iterable[Collection[Any]]
+    values: Iterable[Union[List[Any], Tuple]]
 
     @classmethod
     def from_dict_list(
         cls,
-        data: List[dict[str, Any]],
+        data: List[Dict[str, Any]],
         header: Optional[List[str]] = None,
         row_labels: Optional[List[str]] = None,
     ) -> "TableData":
@@ -67,10 +66,11 @@ class TableData:
             return TableData(header=[], row_labels=[], values=[])
 
         # Get original keys and values
-        transposed_values = list(zip(*self.values)) # We only have one row in this case
+        transposed_values = list(zip(*self.values))  # We only have one row in this case
 
         return TableData(
-            header=self.row_labels or [""] * len(transposed_values[0]),  # First key-value pair becomes header
+            header=self.row_labels
+            or [""] * len(transposed_values[0]),  # First key-value pair becomes header
             row_labels=self.header,
             values=transposed_values,
         )
