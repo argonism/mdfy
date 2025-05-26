@@ -1,0 +1,40 @@
+name: Bug report
+description: Report an error or unexpected behavior
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+       Thanks for taking the time to fill out this bug report!
+
+  - type: textarea
+    attributes:
+      label: Summary
+      description: |
+        A clear and concise description of the bug, it would be appreciated if you include a minimal reproducible example.
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Platform
+      description: What operating system and architecture are you using? (see `uname -orsm`)
+      placeholder: e.g., macOS 14 arm64, Windows 11 x86_64, Ubuntu 20.04 amd64
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Version
+      description: What version of mdfy are you using?
+      placeholder: e.g., 0.8.0
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Python version
+      description: What version of Python are you using?
+      placeholder: e.g., Python 3.12.6
+    validations:
+      required: false
