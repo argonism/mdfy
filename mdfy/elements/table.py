@@ -116,8 +116,9 @@ class MdTable(MdElement):
         | Person 2 | Jane Doe | 25 |
         >>> # Transposed table
         >>> print(MdTable(data, transpose=True))
-        | Name | John Doe | Jane Doe |
+        | | | |
         | --- | --- | --- |
+        | Name | John Doe | Jane Doe |
         | Age | 30 | 25 |
     """
 
