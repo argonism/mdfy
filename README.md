@@ -2,7 +2,7 @@
   <br/>
   <br/>
   <picture>
-    <img alt="mdfy teaser" src="https://raw.githubusercontent.com/argonism/mdfy/main/teaser.png" style="max-width: 100%;">
+    <img alt="mdfy teaser" src="https://raw.githubusercontent.com/argonism/mdfy/main/mdfy.png" style="max-width: 100%;">
   </picture>
 </p>
 
@@ -124,46 +124,62 @@ See [MdText document](https://mdfy.readthedocs.io/en/latest/mdfy.elements.text.h
 
 ## MdTable
 
-MdTable offers a flexible way to convert a Python dict to a Markdown table.
+MdTable offers a flexible way to convert a Python dict or list of dicts to a Markdown table.
+
+```python
+# Single dictionary
+data = {
+    "Name": "John Doe",
+    "Age": 30,
+    "Occupation": "Software Engineer",
+}
+table = MdTable(data)
+print(table)
+
+# | Name | Age | Occupation |
+# | --- | --- | --- |
+# | John Doe | 30 | Software Engineer |
+```
+
+You can also use custom headers:
+
+```python
+table = MdTable(data, header=["Full Name", "Years", "Job"])
+print(table)
+
+# | Full Name | Years | Job |
+# | --- | --- | --- |
+# | John Doe | 30 | Software Engineer |
+```
+
+For lists of dictionaries, you can add row labels:
 
 ```python
 data = [
-    {"precision": 0.845, "Recall": 0.662},
-    {"precision": 0.637, "Recall": 0.802},
-    {"precision": 0.710, "Recall": 0.680},
+    {"Name": "John Doe", "Age": 30},
+    {"Name": "Jane Doe", "Age": 25}
 ]
+table = MdTable(data, row_labels=["Person 1", "Person 2"])
+print(table)
 
-print(MdTable(data))
-
-# The result will be
-# | precision | Recall |
-# | --- | --- |
-# | 0.845 | 0.662 |
-# | 0.637 | 0.802 |
-# | 0.71 | 0.68 |
+# |  | Name | Age |
+# | --- | --- | --- |
+# | Person 1 | John Doe | 30 |
+# | Person 2 | Jane Doe | 25 |
 ```
 
-To transpose a table, all you need to do is pass True to the transpose parameter.
+To transpose a table, pass `True` to the transpose parameter:
 
 ```python
-print(MdTable(data, transpose=True))
+print(MdTable(data, row_labels=["Person 1", "Person 2"], transpose=True))
 
-# | Key | Value 0 | Value 1 | Value 2 |
-# | --- | --- | --- | --- |
-# | precision | 0.845 | 0.637 | 0.71 |
-# | Recall | 0.662 | 0.802 | 0.68 |
-
-# And you can specify header labels when transpose
-labels = ["Metrics", "Model 1", "Model 2", "Model 3"]
-print(MdTable(data, transpose=True, labels=labels))
-
-# | Metrics | Model 1 | Model 2 | Model 3 |
-# | --- | --- | --- | --- |
-# | precision | 0.845 | 0.637 | 0.71 |
-# | Recall | 0.662 | 0.802 | 0.68 |
+# |  |  |  |
+# | --- | --- | --- |
+# | Name | John Doe | Jane Doe |
+# | Age | 30 | 25 |
 ```
 
-You can also specify the precision of float values.
+You can also specify custom labels when transposing and control the precision of float values:
 
 ```python
 data = [
@@ -171,13 +187,14 @@ data = [
     {"precision": 0.63743, "Recall": 0.802697},
     {"precision": 0.718203, "Recall": 0.6802435},
 ]
-labels = ["Metrics", "Model 1", "Model 2", "Model 3"]
-print(MdTable(data, transpose=True, labels=labels, precision=3))
+labels = ["Model 1", "Model 2", "Model 3"]
+print(MdTable(data, row_labels=labels, precision=3))
 
-# | Metrics | Model 1 | Model 2 | Model 3 |
-# | --- | --- | --- | --- |
-# | precision | 0.845 | 0.637 | 0.718 |
-# | Recall | 0.663 | 0.803 | 0.680 |
+# | | precision | Recall |
+# | --- | --- | --- |
+# | Model 1 | 0.845 | 0.663 |
+# | Model 2 | 0.637 | 0.803 |
+# | Model 3 | 0.718 | 0.680 |
 ```
 
 See [MdTable document](https://mdfy.readthedocs.io/en/latest/mdfy.elements.table.html#mdfy.elements.table.MdTable) for details
