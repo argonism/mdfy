@@ -12,7 +12,7 @@ from .elements import (
     MdText,
 )
 from .mdfy import Mdfier
-from .types import ContentType, ContentElementType
+from .types import MdWritableItem, MdContents
 
 __all__ = [
     "MdCode",
@@ -27,6 +27,6 @@ __all__ = [
     "MdTableOfContents",
     "MdText",
     "Mdfier",
-    "ContentType",
-    "ContentElementType",
+    "MdWritableItem",
+    "MdContents",
 ]
