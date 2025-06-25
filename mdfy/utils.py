@@ -3,10 +3,11 @@
 from typing import List, Iterable
 from urllib.parse import quote
 
-from mdfy.types import ContentElementType, ContentType, MdElement
+from mdfy.elements import MdElement
+from mdfy.types import MdContents, MdWritableItem
 
 
-def flattern(content: ContentType) -> List[ContentElementType]:
+def flattern(content: MdContents) -> List[MdWritableItem]:
     """Flattens an iterable of elements.
 
     Args:
@@ -19,7 +20,7 @@ def flattern(content: ContentType) -> List[ContentElementType]:
     if not isinstance(content, Iterable):
         return [content]
 
-    result: list[ContentElementType] = []
+    result: list[MdWritableItem] = []
     for item in content:
         if isinstance(item, MdElement) or isinstance(item, str):
             result.append(item)

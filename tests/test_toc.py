@@ -4,7 +4,7 @@ from typing import List
 import pytest
 
 from mdfy import Mdfier, MdHeader, MdTableOfContents, MdText
-from mdfy.types import ContentElementType
+from mdfy.types import MdWritableItem
 
 
 def test_table_of_contents_basic(tmp_path: Path) -> None:
@@ -13,7 +13,7 @@ def test_table_of_contents_basic(tmp_path: Path) -> None:
     mdfier = Mdfier(filepath)
 
     # Write content with table of contents
-    content: List[ContentElementType] = [
+    content: List[MdWritableItem] = [
         MdHeader("First Section", 1),
         MdHeader("Subsection A", 2),
         MdHeader("Subsection B", 2),
@@ -48,7 +48,7 @@ def test_table_of_contents_with_mdfier_contents(tmp_path: Path) -> None:
     mdfier = Mdfier(filepath)
 
     # Write content with table of contents
-    content: List[ContentElementType] = [
+    content: List[MdWritableItem] = [
         MdTableOfContents(),  # No contents provided, will use Mdfier's content
         MdHeader("Section 1", 1),
         MdHeader("Section 2", 1),
@@ -79,7 +79,7 @@ def test_table_of_contents_empty() -> None:
 
 def test_table_of_contents_standalone() -> None:
     """Test table of contents generation without Mdfier"""
-    contents: List[ContentElementType] = [
+    contents: List[MdWritableItem] = [
         MdHeader("First Section", 1),
         MdHeader("Subsection A", 2),
         MdHeader("Subsection B", 2),

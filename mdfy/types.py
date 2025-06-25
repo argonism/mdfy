@@ -1,9 +1,8 @@
 """Type definitions for mdfy package."""
-
+from __future__ import annotations
 from typing import Union, Iterable
 
 from .elements import MdElement
 
-ContentElementType = Union[str, MdElement]
-_ContentType = Union[ContentElementType, Iterable[ContentElementType]]
-ContentType = Union[_ContentType, Iterable[_ContentType]]
+MdWritableItem = Union[str, MdElement]
+MdContents = Union[MdWritableItem, Iterable["MdContents"]]

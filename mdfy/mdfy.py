@@ -5,7 +5,7 @@ from typing import Optional, Type, Union, Iterable
 
 from .elements import MdTableOfContents
 from .utils import flattern
-from .types import ContentType
+from .types import MdContents
 
 
 class Mdfier:
@@ -87,7 +87,7 @@ class Mdfier:
         self.file_object.close()
 
     @classmethod
-    def stringify(cls, contents: ContentType, separator: str = "\n") -> str:
+    def stringify(cls, contents: MdContents, separator: str = "\n") -> str:
         """Converts the given Markdown content to a string.
 
         Args:
@@ -105,7 +105,7 @@ class Mdfier:
 
         return separator.join(markdown_parts)
 
-    def write(self, contents: ContentType) -> None:
+    def write(self, contents: MdContents) -> None:
         """Writes the given Markdown content to the file.
 
         Args:

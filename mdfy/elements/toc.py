@@ -1,6 +1,6 @@
 from typing import List, Union
 
-from mdfy.types import ContentElementType
+from mdfy.types import MdWritableItem
 from mdfy.utils import generate_anchor
 from mdfy.elements._base import MdControlElement
 from mdfy.elements.header import MdHeader
@@ -19,7 +19,7 @@ class MdTableOfContents(MdControlElement):
         contents (Optional[ContentType]): The markdown contents to generate TOC from.
     """
 
-    def __init__(self, contents: Union[List[ContentElementType], None] = None) -> None:
+    def __init__(self, contents: Union[List[MdWritableItem], None] = None) -> None:
         """Initializes a table of contents element.
 
         Args:
@@ -29,7 +29,7 @@ class MdTableOfContents(MdControlElement):
 
         self._contents = contents
 
-    def render(self, contents: Union[List[ContentElementType], None] = None) -> str:
+    def render(self, contents: Union[List[MdWritableItem], None] = None) -> str:
         """Generates a table of contents from a list of elements.
 
         Args:
