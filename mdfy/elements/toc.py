@@ -19,17 +19,27 @@ class MdTableOfContents(MdControlElement):
         contents (Optional[ContentType]): The markdown contents to generate TOC from.
     """
 
-    def __init__(self, contents: Union[List[MdWritableItem], None] = None) -> None:
+    def __init__(
+        self,
+        contents: Union[List[MdWritableItem], None] = None,
+        render_all: bool = False,
+    ) -> None:
         """Initializes a table of contents element.
 
         Args:
             title (str): The title of the table of contents.
             level (int): The heading level for the table of contents title.
         """
+        super().__init__()
 
         self._contents = contents
+        self._render_all = render_all
 
-    def render(self, contents: Union[List[MdWritableItem], None] = None) -> str:
+    def render(
+        self,
+        contents: Union[List[MdWritableItem], None] = None,
+        index: int | None = None,
+    ) -> str:
         """Generates a table of contents from a list of elements.
 
         Args:
@@ -49,6 +59,10 @@ class MdTableOfContents(MdControlElement):
 
         if len(contents_to_render) == 0:
             return ""
+        if index is not None:
+            if index >= len(contents_to_render):
+                return ""
+            contents_to_render = contents_to_render[index:]
 
         headers = [elem for elem in contents_to_render if isinstance(elem, MdHeader)]
 
