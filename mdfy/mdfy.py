@@ -97,9 +97,9 @@ class Mdfier:
         flattened_contents = flattern(contents)
 
         markdown_parts = []
-        for element in flattened_contents:
+        for i, element in enumerate(flattened_contents):
             if isinstance(element, MdTableOfContents):
-                markdown_parts.append(element.render(flattened_contents))
+                markdown_parts.append(element.render(flattened_contents, i))
             else:
                 markdown_parts.append(str(element))
 

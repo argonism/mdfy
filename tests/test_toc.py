@@ -70,6 +70,41 @@ def test_table_of_contents_with_mdfier_contents(tmp_path: Path) -> None:
     assert expected_toc in result
 
 
+def test_table_of_contents_in_the_middle_of_contents(tmp_path: Path) -> None:
+    """Test table of contents using Mdfier's content list"""
+    filepath = tmp_path / "test.md"
+    mdfier = Mdfier(filepath)
+
+    # Write content with table of contents
+    content: List[MdWritableItem] = [
+        MdHeader("Section 1", 1),
+        MdHeader("Table of Contents", 2),
+        MdTableOfContents(),
+        MdHeader("Section 2", 1),
+        MdHeader("Section 2.1", 2),
+        MdHeader("Section 2.2", 2),
+        MdHeader("Section 3", 1),
+    ]
+    mdfier.write(content)
+
+    # Read the generated content
+    result = filepath.read_text()
+
+    # Expected table of contents
+    expected_toc = "\n".join(
+        [
+            "## Table of Contents",
+            "- [Section 2](#section-2)",
+            "  - [Section 2.1](#section-2.1)",
+            "  - [Section 2.2](#section-2.2)",
+            "- [Section 3](#section-3)",
+            "",
+        ]
+    )
+
+    assert expected_toc in result
+
+
 def test_table_of_contents_empty() -> None:
     """Test table of contents with empty content list"""
     toc = MdTableOfContents(contents=[])
