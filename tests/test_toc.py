@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import List
 
 import pytest
 
@@ -13,7 +12,7 @@ def test_table_of_contents_basic(tmp_path: Path) -> None:
     mdfier = Mdfier(filepath)
 
     # Write content with table of contents
-    content: List[MdWritableItem] = [
+    content: list[MdWritableItem] = [
         MdHeader("First Section", 1),
         MdHeader("Subsection A", 2),
         MdHeader("Subsection B", 2),
@@ -48,7 +47,7 @@ def test_table_of_contents_with_mdfier_contents(tmp_path: Path) -> None:
     mdfier = Mdfier(filepath)
 
     # Write content with table of contents
-    content: List[MdWritableItem] = [
+    content: list[MdWritableItem] = [
         MdTableOfContents(),  # No contents provided, will use Mdfier's content
         MdHeader("Section 1", 1),
         MdHeader("Section 2", 1),
@@ -76,7 +75,7 @@ def test_table_of_contents_in_the_middle_of_contents(tmp_path: Path) -> None:
     mdfier = Mdfier(filepath)
 
     # Write content with table of contents
-    content: List[MdWritableItem] = [
+    content: list[MdWritableItem] = [
         MdHeader("Section 1", 1),
         MdHeader("Table of Contents", 2),
         MdTableOfContents(),
@@ -114,7 +113,7 @@ def test_table_of_contents_empty() -> None:
 
 def test_table_of_contents_standalone() -> None:
     """Test table of contents generation without Mdfier"""
-    contents: List[MdWritableItem] = [
+    contents: list[MdWritableItem] = [
         MdHeader("First Section", 1),
         MdHeader("Subsection A", 2),
         MdHeader("Subsection B", 2),
