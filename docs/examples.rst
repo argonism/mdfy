@@ -71,10 +71,10 @@ Generate documentation for a software project:
            MdText(project_info['description']),
 
            MdHeader("Installation", level=2),
-           MdCode(f"pip install {project_info['package_name']}", language="bash"),
+           MdCode(f"pip install {project_info['package_name']}", syntax="bash"),
 
            MdHeader("Quick Start", level=2),
-           MdCode(project_info['quick_start_code'], language="python"),
+           MdCode(project_info['quick_start_code'], syntax="python"),
 
            MdHeader("Features", level=2),
            MdList(project_info['features']),
@@ -125,14 +125,11 @@ Create reports with dynamic content based on data analysis:
 
        # Create status based on analysis
        if mean_val > 80:
-           status = "[Excellent:bold]"
-           color = "green"
+           status = "**Excellent**"
        elif mean_val > 60:
-           status = "[Good:bold]"
-           color = "blue"
+           status = "**Good**"
        else:
-           status = "[Needs Improvement:bold]"
-           color = "red"
+           status = "**Needs Improvement**"
 
        return [
            MdHeader(title),
@@ -304,10 +301,10 @@ Automatically generate API documentation:
                MdTable(endpoint['parameters']) if endpoint['parameters'] else MdText("No parameters required."),
 
                MdHeader("Request Example", level=3),
-               MdCode(endpoint['request_example'], language="bash"),
+               MdCode(endpoint['request_example'], syntax="bash"),
 
                MdHeader("Response Example", level=3),
-               MdCode(endpoint['response_example'], language="json"),
+               MdCode(endpoint['response_example'], syntax="json"),
 
                MdHeader("Response Codes", level=3),
                MdTable(endpoint['response_codes'])
