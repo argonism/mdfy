@@ -19,7 +19,7 @@ build:
       # Install poetry
       # https://python-poetry.org/docs/#installing-manually
       - pip install uv
-      - pip install sphinx_rtd_theme
+      - pip install furo sphinx-copybutton sphinx-design myst-parser
     post_install:
       # Install dependencies with 'docs' dependency group
       # https://python-poetry.org/docs/managing-dependencies/#dependency-groups
