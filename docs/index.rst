@@ -57,12 +57,12 @@ Installation
 
    pip install mdfy
 
-Basic Usage
------------
+Your First Document
+-------------------
 
 .. code-block:: python
 
-   from mdfy import Mdfier, MdText, MdHeader, MdTable
+   from mdfy import Mdfier, MdHeader, MdText, MdTable
 
    contents = [
        MdHeader("Hello, MDFY!"),
@@ -81,6 +81,9 @@ This creates a markdown file with:
    | head1 | head2 |
    | --- | --- |
    | content | content |
+
+.. note::
+   **New to mdfy?** Check out our :doc:`getting_started` guide for a step-by-step tutorial!
 
 💡 **Advanced Usage**
 ====================
@@ -130,6 +133,12 @@ Each mdfy element is string-convertible and can operate independently:
 
 .. toctree::
    :maxdepth: 2
+   :caption: Getting Started
+
+   getting_started
+
+.. toctree::
+   :maxdepth: 2
    :caption: User Guide
 
    user_guide
@@ -139,7 +148,8 @@ Each mdfy element is string-convertible and can operate independently:
    :maxdepth: 2
    :caption: API Reference
 
-   API Reference <mdfy>
+   mdfy
+   mdfy.elements
 
 🛠️ **Development**
 ==================
