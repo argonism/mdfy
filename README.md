@@ -9,31 +9,29 @@
 <p align="center">
     <img alt="test" src="https://img.shields.io/github/actions/workflow/status/argonism/mdfy/test_for_pr.yml?logo=pytest&label=test&color=green">
     <img alt="latest version" src="https://img.shields.io/github/v/tag/argonism/mdfy?logo=pypi&logoColor=white&label=latest%20version">
-    <img alt="issues" src="https://img.shields.io/github/issues/argonism/mdfy">
     <a href='https://mdfy.readthedocs.io/en/latest/?badge=latest'>
         <img src='https://readthedocs.org/projects/mdfy/badge/?version=latest' alt='Documentation Status' />
     </a>
-    <img alt="PyPI dialy downloads" src="https://img.shields.io/pypi/dd/mdfy">
-    <img alt="PyPI weekly downloads" src="https://img.shields.io/pypi/dw/mdfy">
     <img alt="PyPI monthly downloads" src="https://img.shields.io/pypi/dm/mdfy">
 </p>
 
 # mdfy
 
-Transform text into beautiful markdown, effortlessly.
+**Transform text into beautiful markdown, effortlessly.**
 
-<!-- <p align="center">
-  <img src="path_to_your_project_logo_or_image" alt="MDFY Logo" width="400">
-</p> -->
+mdfy is a Python library that makes creating markdown documents as simple as writing Python code. Generate reports, documentation, and structured content with an intuitive, object-oriented API.
 
-## 🌟 Features
+## ✨ Why mdfy?
 
-- **Simplicity**: Just a few lines of code and voila! An intuitive architecture made simple.
-- **Modulability**: Each module is highly independent, making it easy to use on its own.
-- **Customizable**: Extensible design allowing for easy customization.
-- **Highly Tested**: Robust unit tests ensure reliability.
+- **🎯 Simple**: Create complex markdown with just a few lines of Python
+- **🔧 Flexible**: Each element works independently or together
+- **📊 Data-friendly**: Convert dictionaries, lists, and data structures to markdown
+- **🚀 Fast**: Lightweight with no external dependencies
+- **📚 Well-documented**: Comprehensive documentation and examples
+- **💼 Production-ready**: Used in reports, documentation, and data analysis
 
-## 🚀 Getting Started
+
+## 🚀 Quick Start
 
 ### Installation
 
@@ -41,180 +39,170 @@ Transform text into beautiful markdown, effortlessly.
 pip install mdfy
 ```
 
-### Usage
-
-Here's a quick start guide to get you up and running!
-
-``` python
-from mdfy import Mdfier, MdText, MdHeader, MdTable
-
-contents = [
-  MdHeader("Hello, MDFY!"),
-  MdText("[Life:bold] is [like:italic] a bicycle."),
-  MdTable({"head1": "content", "head2": "content"})
-]
-Mdfier("markdown.md").write(contents)
-
-# => markdown.md
-#
-# # Hello, MDFY!
-# **Life** is *like* a bicycle.
-```
-
-You can pass nested list to `Mdfier.write` and it will be flatterned:
-
-``` python
-from mdfy import Mdfier, MdText, MdHeader, MdTable
-
-group = ["Group A", "Group B"]
-group_agg_results = [
-  [2, 3, 0, 1],
-  [4, 2, 1, 0],
-]
-
-contents = [
-  MdHeader("Hello, MDFY!"),
-  [
-    (
-      MdHeader(group_name, level=2),
-      MdText(f"Sum: {sum(group_agg_result)} ({', '.join(map(str, group_agg_result))})")
-    )
-    for group_name, group_agg_result in zip(group, group_agg_results)
-  ]
-]
-Mdfier("markdown.md").write(contents)
-
-# => markdown.md
-# # Hello, MDFY!
-# ## Group A
-# Sum: 6 (2, 3, 0, 1)
-# ## Group B
-# Sum: 7 (4, 2, 1, 0)
-```
-
-Each mdfy element is string-convertible and can operate independently!
-
-```python
-from mdfy import MdText, MdHeader, MdTable
-
-print(MdHeader("Hello, MDFY!"))
-print(MdText("[Life:bold] is [like:italic] a bicycle."))
-print(MdTable({"head1": "content", "head2": "content"}))
-
-# => result
-#
-# # Hello, MDFY!
-# **Life** is *like* a bicycle.
-# | head1 | head2 |
-# | --- | --- |
-# | content | content |
-```
-
-## MdText Format
-
-With MdText, you can flexibly specify text styles in a way similar to python's string formatting.
-
-```python
-MdText("[a family:quote] of [plain-text formatting syntaxes:bold] that optionally can be [converted to [formal:italic] [markup languages:bold]:not] such as [HTML:strong]")
-```
-
-`a family` of **plain-text formatting syntaxes** that optionally can be ~~converted to _formal_ **markup languages**~~ such as **_HTML_**
-
-See [MdText document](https://mdfy.readthedocs.io/en/latest/mdfy.elements.text.html#mdfy.elements.text.MdText) for details
-
-## MdTable
-
-MdTable offers a flexible way to convert a Python dict or list of dicts to a Markdown table.
-
-```python
-# Single dictionary
-data = {
-    "Name": "John Doe",
-    "Age": 30,
-    "Occupation": "Software Engineer",
-}
-table = MdTable(data)
-print(table)
-
-# | Name | Age | Occupation |
-# | --- | --- | --- |
-# | John Doe | 30 | Software Engineer |
-```
-
-You can also use custom headers:
-
-```python
-table = MdTable(data, header=["Full Name", "Years", "Job"])
-print(table)
-
-# | Full Name | Years | Job |
-# | --- | --- | --- |
-# | John Doe | 30 | Software Engineer |
-```
-
-For lists of dictionaries, you can add row labels:
-
-```python
-data = [
-    {"Name": "John Doe", "Age": 30},
-    {"Name": "Jane Doe", "Age": 25}
-]
-table = MdTable(data, row_labels=["Person 1", "Person 2"])
-print(table)
-
-# |  | Name | Age |
-# | --- | --- | --- |
-# | Person 1 | John Doe | 30 |
-# | Person 2 | Jane Doe | 25 |
-```
-
-To transpose a table, pass `True` to the transpose parameter:
-
-```python
-print(MdTable(data, row_labels=["Person 1", "Person 2"], transpose=True))
-
-# |  |  |  |
-# | --- | --- | --- |
-# | Name | John Doe | Jane Doe |
-# | Age | 30 | 25 |
-```
-
-You can also specify custom labels when transposing and control the precision of float values:
-
-```python
-data = [
-    {"precision": 0.84544, "Recall": 0.662765},
-    {"precision": 0.63743, "Recall": 0.802697},
-    {"precision": 0.718203, "Recall": 0.6802435},
-]
-labels = ["Model 1", "Model 2", "Model 3"]
-print(MdTable(data, row_labels=labels, precision=3))
-
-# | | precision | Recall |
-# | --- | --- | --- |
-# | Model 1 | 0.845 | 0.663 |
-# | Model 2 | 0.637 | 0.803 |
-# | Model 3 | 0.718 | 0.680 |
-```
-
-See [MdTable document](https://mdfy.readthedocs.io/en/latest/mdfy.elements.table.html#mdfy.elements.table.MdTable) for details
-
 ## 📖 Documentation
 
-Check out our [full documentation](https://mdfy.readthedocs.io/en/latest/#) for detailed guides and API references.
+| Resource | Description |
+|----------|-------------|
+| [**Getting Started**](https://mdfy.readthedocs.io/en/latest/getting_started.html) | Step-by-step tutorial for beginners |
+| [**User Guide**](https://mdfy.readthedocs.io/en/latest/user_guide.html) | Complete feature documentation |
+| [**Examples**](https://mdfy.readthedocs.io/en/latest/examples.html) | Real-world usage examples |
+| [**API Reference**](https://mdfy.readthedocs.io/en/latest/mdfy.html) | Complete API documentation |
 
-## ✅ Testing
+### Basic Features
 
-To run the tests:
+| Feature | Description |
+|---------|-------------|
+| **Text styling** | Format text with bold, italic, and more - even in the middle of text |
+| **Headers** | Multiple levels for document structure |
+| **Links** | Internal and external linking |
+| **Lists** | Ordered and unordered with nesting support |
+| **Tables** | From dictionaries and lists with formatting |
+| **Images** | With alt text and titles |
+| **Code blocks** | With syntax highlighting |
+| **Quotes** | For emphasis and citations |
+| **Horizontal rules** | For section separation |
+| **Table of Contents** | Automatic generation from headers |
 
-```shell
-python -m pytest
+### Basic Usage
+
+```python
+from mdfy import Mdfier, MdHeader, MdText, MdTable
+
+# Create content
+content = [
+    MdHeader("My Report"),
+    MdText("This quarter's sales were [excellent:bold]!"),
+    MdTable([
+        {"Product": "Laptop", "Sales": 1200, "Growth": "+15%"},
+        {"Product": "Phone", "Sales": 800, "Growth": "+8%"}
+    ])
+]
+
+# Generate markdown file
+Mdfier("report.md").write(content)
 ```
 
-## 💡 Contributing
+**Output:**
+```markdown
+# My Report
+This quarter's sales were **excellent**!
 
-We welcome contributions!
+| Product | Sales | Growth |
+| --- | --- | --- |
+| Laptop | 1200 | +15% |
+| Phone | 800 | +8% |
+```
+
+## 🎨 Core Elements
+
+**Headers & Text**
+```python
+MdHeader("Title", level=1)                    # # Title
+MdText("[Bold:bold] and [italic:italic]")     # **Bold** and *italic*
+```
+
+**Data & Lists**
+```python
+MdTable(data, precision=2)                    # Convert dicts/lists to tables
+MdList(items, numbered=True)                  # • Bullet or 1. Numbered lists
+```
+
+**Code & More**
+```python
+MdCode("print('hello')", syntax="python")     # Syntax-highlighted code blocks
+```
+
+## 💡 Real-world Examples
+
+### Dynamic Reports
+```python
+def generate_sales_report(sales_data):
+    total = sum(item['amount'] for item in sales_data)
+    return [
+        MdHeader("Sales Report"),
+        MdText(f"Total Revenue: [${total:,}:bold]"),
+        MdTable(sales_data, precision=2)
+    ]
+
+Mdfier("sales.md").write(generate_sales_report(quarterly_data))
+```
+
+### Documentation
+```python
+content = [
+    MdHeader("API Documentation"),
+    MdText("Welcome to our [REST API:bold] documentation."),
+    MdHeader("Endpoints", level=2),
+    MdList([
+        "GET /users - List all users",
+        "POST /users - Create user",
+        "DELETE /users/{id} - Delete user"
+    ])
+]
+```
+
+### Data Analysis
+```python
+# Convert pandas DataFrame to markdown table
+df_summary = df.describe()
+table = MdTable(df_summary.to_dict(), precision=3)
+
+# Create analysis report
+analysis = [
+    MdHeader("Data Analysis Report"),
+    MdText("Dataset contains [1,000:bold] records with [95%:bold] completeness."),
+    MdTable(df_summary.to_dict(), precision=3)
+]
+```
+
+
+## 🔧 Advanced Features
+
+- **Nested Content**: Organize content hierarchically
+- **Custom Formatting**: Flexible text styling with `[text:style]` syntax
+- **Table Customization**: Headers, row labels, precision control, transposition
+- **Independent Elements**: Each element can be used standalone
+- **Type Safety**: Full type hints for better IDE support
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how to get started:
+
+```shell
+# Development setup
+git clone https://github.com/argonism/mdfy.git
+cd mdfy
+pip install -e ".[dev]"
+
+# Run tests
+python -m pytest
+
+# Run tests with coverage
+python -m pytest --cov=mdfy
+```
+
+**Areas we'd love help with:**
+- 🐛 Bug reports and fixes
+- 📚 Documentation improvements
+- ✨ New element types
+- 🎨 Styling and formatting features
+
+## 🆚 Comparison
+
+| Feature | mdfy | mdutils | Template Engines | Manual Strings |
+|---------|------|---------|------------------|----------------|
+| **API Style** | ✅ Object-oriented | ⚠️ Method chaining | ⚠️ Template syntax | ❌ String manipulation |
+| **Data Integration** | ✅ Native dict/list support | ❌ Manual conversion | ⚠️ Template variables | ❌ Manual formatting |
+| **Type Safety** | ✅ Full type hints | ❌ No type hints | ❌ Template strings | ❌ No validation |
+| **Element Independence** | ✅ Use any element alone | ❌ File-based approach | ❌ Full template required | ⚠️ Manual management |
+| **Learning Curve** | ✅ Python objects | ⚠️ mdutils API | ⚠️ Template language | ❌ Markdown knowledge required |
+| **Flexibility** | ✅ Programmatic generation | ⚠️ Limited to built-ins | ⚠️ Template logic | ✅ Full control |
+| **Maintenance** | ✅ Clear structure | ⚠️ String-heavy | ⚠️ Template files | ❌ Error-prone strings |
 
 ## 📜 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+**Made with ❤️ by the mdfy team**
