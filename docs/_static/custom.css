@@ -1,0 +1,304 @@
+/* Custom CSS for mdfy documentation */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+
+/* Root variables for consistent styling */
+:root {
+    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-large: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --border-radius: 0.75rem;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced header styling */
+.sidebar-brand {
+    padding: 1.5rem 1rem;
+    background: var(--gradient-primary);
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-light);
+    text-align: center;
+}
+
+.sidebar-brand img {
+    max-height: 60px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    transition: var(--transition);
+}
+
+.sidebar-brand img:hover {
+    transform: scale(1.05);
+}
+
+/* Code block enhancements */
+.highlight {
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    overflow: hidden;
+    border: 1px solid var(--color-background-secondary);
+    margin: 1rem 0;
+}
+
+.highlight pre {
+    margin: 0;
+    padding: 1.5rem;
+    background: var(--color-code-background);
+    position: relative;
+    border-radius: var(--border-radius);
+}
+
+/* Copy button styling */
+.copybtn {
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition);
+    background: var(--color-brand-primary);
+    color: white;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.copybtn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+    background: var(--color-brand-content);
+}
+
+/* Admonition styling */
+.admonition {
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    border: none;
+    margin: 1.5rem 0;
+    overflow: hidden;
+}
+
+.admonition-title {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 1rem 1.5rem;
+    margin: 0;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.admonition-title::before {
+    margin-right: 0.5rem;
+    font-weight: 600;
+}
+
+.admonition > p {
+    padding: 1.5rem;
+    margin: 0;
+    background: var(--color-admonition-background);
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+/* Note admonition */
+.admonition.note .admonition-title {
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+}
+
+/* Warning admonition */
+.admonition.warning .admonition-title {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+/* Tip admonition */
+.admonition.tip .admonition-title {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+/* Table styling */
+.table {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+    border: none;
+    margin: 1.5rem 0;
+}
+
+.table th {
+    background: var(--gradient-primary);
+    color: white;
+    font-weight: 600;
+    padding: 1rem;
+    border: none;
+    text-align: left;
+}
+
+.table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-background-secondary);
+}
+
+.table tr:hover {
+    background: var(--color-background-hover);
+}
+
+/* Sidebar navigation enhancements */
+.sidebar-tree .reference {
+    transition: var(--transition);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    margin: 0.25rem 0;
+    display: block;
+    text-decoration: none;
+}
+
+.sidebar-tree .reference:hover {
+    background: var(--color-sidebar-item-background--hover);
+    transform: translateX(4px);
+}
+
+.sidebar-tree .reference.current {
+    background: var(--color-brand-primary);
+    color: white;
+    font-weight: 600;
+}
+
+/* Content area enhancements */
+.content-wrapper {
+    max-width: none;
+}
+
+article {
+    padding: 2rem;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+/* Header improvements */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--color-foreground-primary);
+}
+
+h1 {
+    font-size: 2.5rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+    border-bottom: 2px solid var(--color-brand-primary);
+    padding-bottom: 0.5rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+    color: var(--color-brand-content);
+}
+
+/* Paragraph styling */
+p {
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+    color: var(--color-foreground-secondary);
+}
+
+/* List styling */
+ul, ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+/* Link styling */
+a {
+    color: var(--color-brand-primary);
+    text-decoration: none;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+a:hover {
+    color: var(--color-brand-content);
+    text-decoration: underline;
+}
+
+/* Code inline styling */
+code {
+    background: var(--color-code-background);
+    color: var(--color-code-foreground);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid var(--color-background-secondary);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    article {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .sidebar-brand {
+        padding: 1rem;
+    }
+}
+
+/* Dark mode specific adjustments */
+@media (prefers-color-scheme: dark) {
+    .sidebar-brand {
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    }
+
+    .highlight {
+        border-color: var(--color-background-secondary);
+    }
+}
+
+/* Animation for smooth transitions */
+* {
+    transition: var(--transition);
+}
+
+/* Focus states for accessibility */
+:focus {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+    .sidebar-brand,
+    .copybtn,
+    .sidebar-tree {
+        display: none !important;
+    }
+
+    article {
+        max-width: none;
+        padding: 0;
+    }
+}
