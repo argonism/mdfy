@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Union, Iterable, Tuple
+from typing import Any, Dict, Optional, Union, Iterable, Tuple
 
 from ._base import MdElement
 
@@ -9,28 +9,28 @@ class TableData:
     """Data model for markdown table content.
 
     Attributes:
-        header (List[str]): Column headers of the table
-        row_labels (List[str]): Row labels (used when table is transposed)
-        values (List[List[Any]]): 2D array of table values
+        header (list[str]): Column headers of the table
+        row_labels (list[str]): Row labels (used when table is transposed)
+        values (list[list[Any]]): 2D array of table values
     """
 
-    header: List[str]
-    row_labels: List[str]
-    values: Iterable[Union[List[Any], Tuple]]
+    header: list[str]
+    row_labels: list[str]
+    values: Iterable[Union[list[Any], Tuple]]
 
     @classmethod
     def from_dict_list(
         cls,
-        data: List[Dict[str, Any]],
-        header: Optional[List[str]] = None,
-        row_labels: Optional[List[str]] = None,
+        data: list[Dict[str, Any]],
+        header: Optional[list[str]] = None,
+        row_labels: Optional[list[str]] = None,
     ) -> "TableData":
         """Create TableData from a list of dictionaries.
 
         Args:
-            data (List[dict[str, Any]]): List of dictionaries to convert to table data
-            header (Optional[List[str]], optional): Custom header labels. Defaults to None.
-            row_labels (Optional[List[str]], optional): Custom row labels. Defaults to None.
+            data (list[dict[str, Any]]): List of dictionaries to convert to table data
+            header (Optional[list[str]], optional): Custom header labels. Defaults to None.
+            row_labels (Optional[list[str]], optional): Custom row labels. Defaults to None.
 
         Returns:
             TableData: Converted table data
@@ -81,8 +81,8 @@ class MdTable(MdElement):
 
     Args:
         data (dict or list): The data to convert.
-        header (List[str], optional): Custom header labels. If not provided, dictionary keys will be used.
-        row_labels (List[str], optional): Custom row labels. If not provided, no row labels will be shown.
+        header (list[str], optional): Custom header labels. If not provided, dictionary keys will be used.
+        row_labels (list[str], optional): Custom row labels. If not provided, no row labels will be shown.
         transpose (bool, optional): If True, transpose the table. Defaults to False.
         precision (Optional[int]): Number of decimal places for floats. If None, values are not formatted.
 
@@ -124,18 +124,18 @@ class MdTable(MdElement):
 
     def __init__(
         self,
-        data: Union[Dict[str, Any], List[Dict[str, Any]]],
-        header: Optional[List[str]] = None,
-        row_labels: Optional[List[str]] = None,
+        data: Union[Dict[str, Any], list[Dict[str, Any]]],
+        header: Optional[list[str]] = None,
+        row_labels: Optional[list[str]] = None,
         transpose: bool = False,
         precision: Union[None, int] = None,
     ):
         """Initialize a MdTable instance.
 
         Args:
-            data (Union[Dict[str, Any], List[Dict[str, Any]]]): The data to convert.
-            header (List[str], optional): Custom header labels. If not provided, dictionary keys will be used.
-            row_labels (List[str], optional): Custom row labels. If not provided, no row labels will be shown.
+            data (Union[Dict[str, Any], list[Dict[str, Any]]]): The data to convert.
+            header (list[str], optional): Custom header labels. If not provided, dictionary keys will be used.
+            row_labels (list[str], optional): Custom row labels. If not provided, no row labels will be shown.
             transpose (bool, optional): If True, transpose the table. Defaults to False.
             precision (Optional[int]): Number of decimal places for floats. If None, values are not formatted.
         """
@@ -152,14 +152,14 @@ class MdTable(MdElement):
         self.transpose = transpose
         self.precision = precision
 
-    def _flatten_data(self, data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def _flatten_data(self, data: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
         """Flatten nested dictionaries in the data.
 
         Args:
-            data (List[Dict[str, Any]]): The data to flatten.
+            data (list[Dict[str, Any]]): The data to flatten.
 
         Returns:
-            List[Dict[str, Any]]: Flattened data
+            list[Dict[str, Any]]: Flattened data
         """
         flattened_data = []
         for entry in data:

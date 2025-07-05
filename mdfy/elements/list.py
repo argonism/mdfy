@@ -1,4 +1,3 @@
-from typing import List as TypedList
 from typing import Union
 
 from ._base import MdElement
@@ -8,7 +7,7 @@ class MdList(MdElement):
     """Represents a Markdown list.
 
     Attributes:
-        items (List[Union[str, MdList]]): List of items, where each item can be a string or another MdList.
+        items (list[Union[str, MdList]]): List of items, where each item can be a string or another MdList.
         depth (int): Current depth of the list.
         indent (int): indent size of the list.
         numbered (bool): If True, the list will be numbered. Otherwise, it will be bulleted.
@@ -41,7 +40,7 @@ class MdList(MdElement):
 
     def __init__(
         self,
-        items: TypedList[Union[str, "MdList"]],
+        items: list[Union[str, "MdList"]],
         depth: int = 0,
         indent: int = 4,
         numbered: bool = False,
@@ -49,7 +48,7 @@ class MdList(MdElement):
         """Initialize a MdList instance.
 
         Args:
-            items (List[Union[str, MdList]]): List of items, where each item can be a string or another MdList.
+            items (list[Union[str, MdList]]): List of items, where each item can be a string or another MdList.
             That's a [A:bold] statement (bool, optional): If True, the list will be numbered. Otherwise, it will be bulleted. Defaults to True.
             depth (int, optional): Current depth of the list. Defaults to 0.
             indent (int, optional): indent size of the list. Defaults to 4.
@@ -60,11 +59,11 @@ class MdList(MdElement):
         self.depth = depth
         self.indent = indent
 
-    def _process_items(self, items: TypedList[Union[str, "MdList"]], depth: int) -> str:
+    def _process_items(self, items: list[Union[str, "MdList"]], depth: int) -> str:
         """Process the given list of items and convert them to a markdown string.
 
         Args:
-            items (List[Union[str, MdList]]): List of items to be processed.
+            items (list[Union[str, MdList]]): List of items to be processed.
             depth (int): Current depth of the list.
 
         Returns:

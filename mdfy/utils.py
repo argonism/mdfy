@@ -1,13 +1,13 @@
 """Utility functions for mdfy package."""
 
-from typing import List, Iterable
+from typing import Iterable
 from urllib.parse import quote
 
 from mdfy.elements import MdElement
 from mdfy.types import MdContents, MdWritableItem
 
 
-def flattern(content: MdContents) -> List[MdWritableItem]:
+def flattern(content: MdContents) -> list[MdWritableItem]:
     """Flattens an iterable of elements.
 
     Args:

@@ -1,4 +1,4 @@
-from typing import List, Union, Optional
+from typing import Union, Optional
 
 from mdfy.types import MdWritableItem
 from mdfy.utils import generate_anchor
@@ -21,7 +21,7 @@ class MdTableOfContents(MdControlElement):
 
     def __init__(
         self,
-        contents: Union[List[MdWritableItem], None] = None,
+        contents: Union[list[MdWritableItem], None] = None,
         render_all: bool = False,
     ) -> None:
         """Initializes a table of contents element.
@@ -37,13 +37,13 @@ class MdTableOfContents(MdControlElement):
 
     def render(
         self,
-        contents: Union[List[MdWritableItem], None] = None,
+        contents: Union[list[MdWritableItem], None] = None,
         index: Optional[int] = None,
     ) -> str:
         """Generates a table of contents from a list of elements.
 
         Args:
-            elements (List[ContentElementType]): The list of elements to generate TOC from.
+            elements (list[ContentElementType]): The list of elements to generate TOC from.
             toc (MdTableOfContents): The table of contents element with configuration.
 
         Returns:
