@@ -38,7 +38,7 @@ jobs:
       - name: Commit and push if changed
         run: |
           git add pyproject.toml uv.lock
-          git commit -m ":wrench: Bump version to ${{ steps.update_version.outputs.new_version }}" || echo "No changes to commit"
+          git commit -m ":wrench: Bump version to ${{ github.event.inputs.version }}" || echo "No changes to commit"
           git push
 
       - name: Build package
