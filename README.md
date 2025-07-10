@@ -172,13 +172,10 @@ We welcome contributions! Here's how to get started:
 # Development setup
 git clone https://github.com/argonism/mdfy.git
 cd mdfy
-pip install -e ".[dev]"
+uv sync --all-groups
 
 # Run tests
 python -m pytest
-
-# Run tests with coverage
-python -m pytest --cov=mdfy
 ```
 
 **Areas we'd love help with:**
@@ -187,22 +184,7 @@ python -m pytest --cov=mdfy
 - ✨ New element types
 - 🎨 Styling and formatting features
 
-## 🆚 Comparison
-
-| Feature | mdfy | mdutils | Template Engines | Manual Strings |
-|---------|------|---------|------------------|----------------|
-| **API Style** | ✅ Object-oriented | ⚠️ Method chaining | ⚠️ Template syntax | ❌ String manipulation |
-| **Data Integration** | ✅ Native dict/list support | ❌ Manual conversion | ⚠️ Template variables | ❌ Manual formatting |
-| **Type Safety** | ✅ Full type hints | ❌ No type hints | ❌ Template strings | ❌ No validation |
-| **Element Independence** | ✅ Use any element alone | ❌ File-based approach | ❌ Full template required | ⚠️ Manual management |
-| **Learning Curve** | ✅ Python objects | ⚠️ mdutils API | ⚠️ Template language | ❌ Markdown knowledge required |
-| **Flexibility** | ✅ Programmatic generation | ⚠️ Limited to built-ins | ⚠️ Template logic | ✅ Full control |
-| **Maintenance** | ✅ Clear structure | ⚠️ String-heavy | ⚠️ Template files | ❌ Error-prone strings |
 
 ## 📜 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-**Made with ❤️ by the mdfy team**
+This project is licensed under the MIT License.
